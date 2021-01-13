@@ -1,8 +1,8 @@
-package fr.eni.projetJEE.DAL;
+package fr.eni.eniEncheres.DAL;
 
 import java.util.List;
 
-import fr.eni.projetJEE.BO.Enchere;
+import fr.eni.eniEncheres.BO.Enchere;
 
 public interface EnchereDAO {
 	public Enchere insert(Enchere enchere) throws EnchereDALException;

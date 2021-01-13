@@ -1,4 +1,4 @@
-package fr.eni.projetJEE.DAL;
+package fr.eni.eniEncheres.DAL;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.eni.projetJEE.BO.Enchere;
+import fr.eni.eniEncheres.BO.Enchere;
 
 public class EnchereDAOImpl implements EnchereDAO {
 	private String INSERT = "INSERT INTO ENCHERES (date_enchere,montant_enchere,no_article,no_utilisateur ) VALUES (?,?,?,?)";

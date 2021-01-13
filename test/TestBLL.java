@@ -1,4 +1,4 @@
-package fr.eni.eniEncheres.TEST;
+package fr.eni.eniEncheres.test;
 
 import fr.eni.eniEncheres.BLL.IUtilisateurManager;
 import fr.eni.eniEncheres.BLL.UtilisateurBLLException;
