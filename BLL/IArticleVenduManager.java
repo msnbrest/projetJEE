@@ -6,7 +6,11 @@ import fr.eni.eniEncheres.BO.ArticleVendu;
 
 public interface IArticleVenduManager {
 
+<<<<<<< Updated upstream
 	//TODO Regardï¿½ les methodes
+=======
+	//TODO Regardé les methodes
+>>>>>>> Stashed changes
 	public List<ArticleVendu> getArticleVendu(Integer noArticle, String categorie) throws ArticleVenduManagerException;
 	
 	// Obption de la liste des articles vendus par un utilisateur
