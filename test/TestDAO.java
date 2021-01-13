@@ -1,4 +1,4 @@
-package fr.eni.eniEncheres.TEST;
+package fr.eni.eniEncheres.test;
 
 import fr.eni.eniEncheres.BO.Utilisateur;
 import fr.eni.eniEncheres.DAL.IUtilisateurDao;
@@ -12,7 +12,7 @@ public class TestDAO {
 	private static IUtilisateurDao userDao = UtilisateurDaoFactory.getDao();
 			
 	public static void main(String[] args) throws UtilisateurDaoException {
-		userDao.create(new Utilisateur("Zizou", "Zidane", "Zineddine", "Zizoy@eni-campus.fr", "0606060606", "Av Champs Elysée", "75000", "Paris", "zzzz", 100, false));
+		userDao.create(new Utilisateur("Zizou", "Zidane", "Zineddine", "Zizoy@eni-campus.fr", "0606060606", "Av Champs Elysï¿½e", "75000", "Paris", "zzzz", 100, false));
 		System.out.println(userDao.getAllUsers());
 	}
 

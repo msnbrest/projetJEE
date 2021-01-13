@@ -3,7 +3,6 @@ package fr.eni.eniEncheres.DAL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,8 +78,8 @@ public class UtilisateurDaoImpl implements IUtilisateurDao {
 	public void deleteUser(Integer id) throws UtilisateurDaoException {
 
 		try {
-			Connection conx = ConnectionProvider.getConnection();
-			PreparedStatement res = conx.prepareStatement("DELETE * FROM UTILISATEURS WHERE noUtilisateur like ?");
+			//Connection conx = ConnectionProvider.getConnection();
+			//PreparedStatement res = conx.prepareStatement("DELETE * FROM UTILISATEURS WHERE noUtilisateur like ?");
 
 		} catch (Exception e) {
 //			e.printStackTrace();

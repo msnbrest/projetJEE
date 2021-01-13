@@ -6,8 +6,8 @@ import fr.eni.eniEncheres.BO.ArticleVendu;
 
 public interface IArticleVenduManager {
 
-	//TODO Regardé les methodes
-	public List<ArticleVendu> getArticleVendu(Integer noArticle, String catégorie) throws ArticleVenduManagerException;
+	//TODO Regardï¿½ les methodes
+	public List<ArticleVendu> getArticleVendu(Integer noArticle, String categorie) throws ArticleVenduManagerException;
 	
 	// Obption de la liste des articles vendus par un utilisateur
 	public List<ArticleVendu> getListeArticleVenduUser(Integer noUtilisateur) throws ArticleVenduManagerException;

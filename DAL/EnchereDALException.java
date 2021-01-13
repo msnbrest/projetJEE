@@ -1,4 +1,4 @@
-package fr.eni.projetJEE.DAL;
+package fr.eni.eniEncheres.DAL;
 
 public class EnchereDALException extends Exception {
 	/**

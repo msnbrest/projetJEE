@@ -12,12 +12,11 @@ import fr.eni.eniEncheres.BO.ArticleVendu;
 
 public class ArticleVenduImpl implements IArticleVenduDAO {
 
-	//Requete SQL Insert ne possède pas de no_article
-	private String INSERT = "INSERT INTO ARTICLES_VENDUS (nom_article, description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie) VALUES (?,?,?,?,?,?,?,?,?)";
+	//Requete SQL Insert ne possï¿½de pas de no_article
+	private String INSERT = "INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie) VALUES (?,?,?,?,?,?,?,?)";
 	
 	@Override
 	public ArticleVendu insert(ArticleVendu article) {
-
 		try (Connection cnx = ConnectionProvider.getConnection();){
 			PreparedStatement stmt = cnx.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, article.getNomArticle());
@@ -28,9 +27,9 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 			stmt.setInt(5, article.getMiseAPrix());
 			stmt.setInt(6, article.getPrixVente());
 			//TODO Fixer les todo dans la BO
-			stmt.setInt(7, article.get);
+			stmt.setInt(7, 7);
 			//TODO Fixer les todo dans la BO
-			stmt.setInt(8, article.get);
+			stmt.setInt(8, 7);
 			
 			Integer nbRows = stmt.executeUpdate();
 			if(nbRows == 1)

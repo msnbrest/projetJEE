@@ -4,5 +4,5 @@ import fr.eni.eniEncheres.BO.ArticleVendu;
 
 public interface IArticleVenduDAO {
 
-	public Integer insert(ArticleVendu article);
+	public ArticleVendu insert(ArticleVendu article);
 }

@@ -1,4 +1,4 @@
-package fr.eni.projetJEE.BO;
+package fr.eni.eniEncheres.BO;
 
 public class Categorie {
 	private int noCategorie;

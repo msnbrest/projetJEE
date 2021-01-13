@@ -10,7 +10,7 @@ public class ArticleVenduManagerImpl implements IArticleVenduManager {
 	private IArticleVenduDAO dao = DAOFact.getArticleVenduDAO();
 
 	@Override
-	public List<ArticleVendu> getArticleVendu(Integer noArticle, String catégorie) throws ArticleVenduManagerException {
+	public List<ArticleVendu> getArticleVendu(Integer noArticle, String categorie) throws ArticleVenduManagerException {
 		// TODO Auto-generated method stub
 		return null;
 	}
