@@ -1,4 +1,5 @@
-package fr.eni.projetJEE.DAL;
+package fr.eni.eniEncheres.DAL;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +12,7 @@ import javax.sql.DataSource;
 
 abstract class ConnectionProvider {
 	private static DataSource dataSource;
-	private static final String URL="jdbc:sqlserver://127.0.0.1;databasename=BDD_EniEncheres;";
+	private static final String URL="jdbc:sqlserver://localhost:1433;databasename=BDD_EniEncheres";
 	private static final String USER="sa";
 	private static final String PASSWORD="Pa$$w0rd";
 	private static final String DRIVER="com.microsoft.sqlserver.jdbc.SQLServerDriver";

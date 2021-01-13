@@ -1,7 +1,8 @@
-package fr.eni.projetJEE.DAL;
+package fr.eni.eniEncheres.DAL;
 
 public class DAOFact {
-	public static EnchereDAO getEnchereDAO() {
-		return new EnchereDAOImpl();
+
+	public static IArticleVenduDAO getArticleVenduDAO () {
+		return new ArticleVenduImpl();
 	}
 }
