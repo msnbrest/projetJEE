@@ -3,7 +3,7 @@ package fr.eni.eniEncheres.BO;
 import java.time.LocalDate;
 
 public class Enchere {
-	private int IdEnchere = -1;// -1 => pas encore enregistrée
+	private int IdEnchere;
 	private LocalDate dateEnchere;
 	private int montantEnchere;
 	private int noArticle;
