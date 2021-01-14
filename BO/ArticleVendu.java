@@ -12,16 +12,17 @@ public class ArticleVendu {
 	private Integer miseAPrix;
 	private Integer prixVente;
 	private Boolean etatVente;
-	//TODO Ajouter private Categorie categorieArticleVendu;
-	//TODO private Integer noUtilisateur;
+	private Categorie categorieArticleVendu;
+	private Utilisateur utilisateur;
 	
 	public ArticleVendu() {
 		
 	}
 	
-	public ArticleVendu(Integer noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, Integer miseAPrix, Integer prixVente, Boolean etatVente) {
-		this.noArticle = noArticle;
+	public ArticleVendu(String nomArticle, String description, LocalDate dateDebutEncheres,
+			LocalDate dateFinEncheres, Integer miseAPrix, Integer prixVente, Boolean etatVente,
+			Categorie categorieArticleVendu, Utilisateur utilisateur) {
+		super();
 		this.nomArticle = nomArticle;
 		this.description = description;
 		this.dateDebutEncheres = dateDebutEncheres;
@@ -29,7 +30,11 @@ public class ArticleVendu {
 		this.miseAPrix = miseAPrix;
 		this.prixVente = prixVente;
 		this.etatVente = etatVente;
+		this.categorieArticleVendu = categorieArticleVendu;
+		this.utilisateur = utilisateur;
 	}
+
+
 
 	public Integer getNoArticle() {
 		return noArticle;
@@ -95,10 +100,27 @@ public class ArticleVendu {
 		this.etatVente = etatVente;
 	}
 
+	public Categorie getCategorieArticleVendu() {
+		return categorieArticleVendu;
+	}
+
+	public void setCategorieArticleVendu(Categorie categorieArticleVendu) {
+		this.categorieArticleVendu = categorieArticleVendu;
+	}
+
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
+
 	@Override
 	public String toString() {
 		return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
 				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", miseAPrix="
-				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + "]";
+				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", categorieArticleVendu="
+				+ categorieArticleVendu + ", utilisateur=" + utilisateur + "]";
 	}
 }
