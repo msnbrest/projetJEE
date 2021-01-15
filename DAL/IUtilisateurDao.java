@@ -11,6 +11,6 @@ public interface IUtilisateurDao {
 	public void deleteUser(Integer Id) throws UtilisateurDaoException;
 	public List<Utilisateur> getUserByMC(String mc) throws UtilisateurDaoException; 
 	public Utilisateur getUserById(Integer id) throws UtilisateurDaoException; 
-	public Utilisateur UpdateUser(Utilisateur utilisateur) throws UtilisateurDaoException; 
+	public Utilisateur updateUser(Utilisateur utilisateur) throws UtilisateurDaoException; 
 
 }
