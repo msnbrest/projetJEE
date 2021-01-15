@@ -11,7 +11,11 @@ public class DAOFact {
 	}
 
 	public static ICategorieDAO getCategorieDAO() {
-		return new CategorieDaoImpl();
+		return new CategorieDAOImpl();
+	}
+
+	public static IRetraitDAO getRetraitDAO() {
+		return new RetraitDAOImpl();
 	}
 
 	public static IUtilisateurDao getUtilisateurDAO() {
