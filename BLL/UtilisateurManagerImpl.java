@@ -37,8 +37,14 @@ public class UtilisateurManagerImpl implements IUtilisateurManager {
 	}
 
 	@Override
-	public void deleteUtilisateur(Integer id) {
-		// TODO Auto-generated method stub
+	public void deleteUtilisateur(Integer id) throws UtilisateurBLLException {
+		try {
+			userDao.deleteUser(id);
+		} catch (UtilisateurDaoException e) {
+//			e.printStackTrace();
+			throw new UtilisateurBLLException(e.getMessage());
+		
+		}
 
 	}
 
@@ -46,6 +52,19 @@ public class UtilisateurManagerImpl implements IUtilisateurManager {
 	public Utilisateur updateUtilisateur(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Utilisateur> getUserByMC(String mc) throws UtilisateurBLLException {
+		List <Utilisateur> users = new ArrayList<Utilisateur>();
+		try {
+			users = userDao.getUserByMC(mc);
+		} catch (UtilisateurDaoException e) {
+//			e.printStackTrace();
+		throw new UtilisateurBLLException(e.getMessage());
+			
+		}
+		return users ;
 	}
 
 }
