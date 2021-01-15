@@ -12,9 +12,12 @@ public interface IArticleVenduDAO {
 	
 	public List<ArticleVendu> getAll() throws EnchereDALException;
 	
+	public void delete(ArticleVendu article) throws EnchereDALException;
+	
+	
+	
 	// TODO voir la methode à mettre en place selon moi
 	public ArticleVendu update(Integer a);
-	
 
 	//Give the list of itmes sold using the name without categorie field
 	public List<ArticleVendu> getListeArticleVenduUser(String researchNameItem);

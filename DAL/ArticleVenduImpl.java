@@ -16,8 +16,9 @@ import fr.eni.eniEncheres.BO.Utilisateur;
 public class ArticleVenduImpl implements IArticleVenduDAO {
 
 	// Requete SQL Insert ne possï¿½de pas de no_article
-	private String INSERT = "INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie) VALUES (?,?,?,?,?,?,?,?)";
+	private String INSERT = "INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie, article_accessible) VALUES (?,?,?,?,?,?,?,?, ?)";
 	private String SELECT = "Select * From ARTICLES_VENDUS";
+	private String DELETE = "DELETE FROM ARTICLES_VENDUS WHERE no_article like ?";
 	private String UPDATE = "";// TODO Delete then Insert or update?
 
 	@Override
@@ -33,6 +34,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 			// stmt.setInt(7, article.getUtilisateur().getNoUtilisateur());
 			stmt.setInt(7, 20);
 			stmt.setInt(8, 3);
+			stmt.setBoolean(9, article.getEtatVente());
 			Integer nbRows = stmt.executeUpdate();
 			if (nbRows == 1) {
 				ResultSet rs = stmt.getGeneratedKeys();
@@ -45,6 +47,20 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 			e.printStackTrace();
 		}
 		return article;
+	}
+	
+	public void delete(ArticleVendu article) throws EnchereDALException{
+		try {
+			Connection conx = ConnectionProvider.getConnection();
+			PreparedStatement req = conx.prepareStatement(DELETE);
+			req.setInt(1, article.getNoArticle());
+			req.executeUpdate();
+
+			} catch (Exception e) {
+			// e.printStackTrace();
+			throw new EnchereDALException("Probleme au niveau de DAL pour suprimer un article");
+
+			 }
 	}
 
 	@Override
@@ -73,7 +89,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				article.setUtilisateur(new Utilisateur());
 				//libelle fixé à ""
 				article.setCategorieArticleVendu(new Categorie(rs.getInt("no_categorie"), ""));
-				
+				article.setArticleAccessible(rs.getBoolean("article_accessible"));
 				result.add(article);
 			}
 		} catch (Exception e) {
@@ -81,6 +97,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 		}
 		return result;
 	}
+	
 
 	@Override
 	public List<ArticleVendu> getListeArticleVenduUser(String researchNameItem) {

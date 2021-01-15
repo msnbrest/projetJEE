@@ -10,24 +10,27 @@ import fr.eni.eniEncheres.DAL.IArticleVenduDAO;
 
 public class ArticleVenduManagerImpl implements IArticleVenduManager {
 	private IArticleVenduDAO dao = DAOFact.getArticleVenduDAO();
-	
 	private List<ArticleVendu> listArticles = new ArrayList<ArticleVendu>();
 	
 	public List<ArticleVendu> getArticleVendu() throws ArticleVenduManagerException {
 		
 		try {
-			return dao.getAll();
+			listArticles = dao.getAll();
+			return listArticles;
 		} catch (EnchereDALException e) {
 			throw new ArticleVenduManagerException("Problème dans la récupération des articles");
 			//e.printStackTrace();
 		}
 		
 	}
+	
+	@Override
+	public ArticleVendu insertArticle(ArticleVendu article) throws ArticleVenduManagerException {
+		return dao.insert(article);
+	}
 
 	@Override
 	public List<ArticleVendu> getArticleVendu(Integer noArticle, String categorie) throws ArticleVenduManagerException {
-		
-		
 		return null;
 	}
 
@@ -43,10 +46,7 @@ public class ArticleVenduManagerImpl implements IArticleVenduManager {
 		return null;
 	}
 
-	@Override
-	public ArticleVendu insertArticle(ArticleVendu article) throws ArticleVenduManagerException {
-		return dao.insert(article);
-	}
+	
 
 	@Override
 	public Integer updateArticle(ArticleVendu article) throws ArticleVenduManagerException {
