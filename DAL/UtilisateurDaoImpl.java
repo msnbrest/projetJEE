@@ -7,8 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.protocol.Resultset;
-import com.mysql.cj.xdevapi.Statement;
+
 
 import fr.eni.eniEncheres.BO.Utilisateur;
 
@@ -140,10 +139,10 @@ public class UtilisateurDaoImpl implements IUtilisateurDao {
 	}
 
 	@Override
-	public Utilisateur UpdateUser(Utilisateur utilisateur) throws UtilisateurDaoException {
+	public Utilisateur updateUser(Utilisateur utilisateur) throws UtilisateurDaoException {
 		try {
 			Connection conx = ConnectionProvider.getConnection();
-			PreparedStatement req = conx.prepareStatement("UPDATE UTILISATEURS SET pseudo=? nom=?, prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=?, credit=?, administrateur=?, WHERE no_utilisateur=? ");
+			PreparedStatement req = conx.prepareStatement("UPDATE UTILISATEURS SET pseudo=?, nom=?, prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=?, credit=?, administrateur=? WHERE no_utilisateur=? ");
 			req.setString(1, utilisateur.getPseudo());
 			req.setString(2, utilisateur.getNom());
 			req.setString(3, utilisateur.getPrenom());
