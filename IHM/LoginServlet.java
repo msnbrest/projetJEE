@@ -28,12 +28,23 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		if(request.getParameter("identifiant") != null){
+			request.getSession().setAttribute("login", request.getParameter("nom"));
+			request.getRequestDispatcher("/EncheresServlet").forward(request, response);
+			
+		
+				
+		}else {
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+			
+		}
 		/*
 		 * TODO : TOUDOU recup infos, demander modele session, creer filtre verif mdp et
 		 * pseudo exist et bon
 		 */
 
-		request.getRequestDispatcher("login.jsp").forward(request, response);
+//		request.getRequestDispatcher("login.jsp").forward(request, response);
 	}
 
 	/**
