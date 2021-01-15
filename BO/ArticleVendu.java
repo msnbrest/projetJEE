@@ -14,6 +14,7 @@ public class ArticleVendu {
 	private Boolean etatVente;
 	private Categorie categorieArticleVendu;
 	private Utilisateur utilisateur;
+	private Boolean articleAccessible;//TODO accessible 
 	
 	public ArticleVendu() {
 		
@@ -21,7 +22,7 @@ public class ArticleVendu {
 	
 	public ArticleVendu(String nomArticle, String description, LocalDate dateDebutEncheres,
 			LocalDate dateFinEncheres, Integer miseAPrix, Integer prixVente, Boolean etatVente,
-			Categorie categorieArticleVendu, Utilisateur utilisateur) {
+			Categorie categorieArticleVendu, Utilisateur utilisateur, Boolean articleAccessible) {
 		super();
 		this.nomArticle = nomArticle;
 		this.description = description;
@@ -32,6 +33,7 @@ public class ArticleVendu {
 		this.etatVente = etatVente;
 		this.categorieArticleVendu = categorieArticleVendu;
 		this.utilisateur = utilisateur;
+		this.articleAccessible = articleAccessible;
 	}
 
 
@@ -115,12 +117,31 @@ public class ArticleVendu {
 	public void setUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
+	
+	
 
-	@Override
-	public String toString() {
-		return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
-				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", miseAPrix="
-				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", categorieArticleVendu="
-				+ categorieArticleVendu + ", utilisateur=" + utilisateur + "]";
+	public Boolean getArticleAccessible() {
+		return articleAccessible;
+	}
+
+	public void setArticleAccessible(Boolean articleAccessible) {
+		this.articleAccessible = articleAccessible;
+	}
+
+	public ArticleVendu(Integer noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
+			LocalDate dateFinEncheres, Integer miseAPrix, Integer prixVente, Boolean etatVente,
+			Categorie categorieArticleVendu, Utilisateur utilisateur, Boolean articleAccessible) {
+		super();
+		this.noArticle = noArticle;
+		this.nomArticle = nomArticle;
+		this.description = description;
+		this.dateDebutEncheres = dateDebutEncheres;
+		this.dateFinEncheres = dateFinEncheres;
+		this.miseAPrix = miseAPrix;
+		this.prixVente = prixVente;
+		this.etatVente = etatVente;
+		this.categorieArticleVendu = categorieArticleVendu;
+		this.utilisateur = utilisateur;
+		this.articleAccessible = articleAccessible;
 	}
 }

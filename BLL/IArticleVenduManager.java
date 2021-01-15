@@ -9,6 +9,10 @@ public interface IArticleVenduManager {
 
 	public List<ArticleVendu> getArticleVendu() throws ArticleVenduManagerException;
 	
+	// return noArticle
+	public ArticleVendu insertArticle(ArticleVendu article) throws ArticleVenduManagerException;
+	
+	
 	public List<ArticleVendu> getArticleVendu(Integer noArticle, String categorie) throws ArticleVenduManagerException;
 	
 	// Obtention de la liste des articles vendus par un utilisateur
@@ -16,9 +20,6 @@ public interface IArticleVenduManager {
 	
 	// return article vendu
 	public ArticleVendu getArticleVendu(Integer noArticle) throws ArticleVenduManagerException;
-	
-	// return noArticle
-	public ArticleVendu insertArticle(ArticleVendu article) throws ArticleVenduManagerException;
 	
 	//return noArticle
 	public Integer updateArticle(ArticleVendu article) throws ArticleVenduManagerException;
