@@ -10,7 +10,7 @@ import java.util.List;
 
 import fr.eni.eniEncheres.BO.Enchere;
 
-public class EnchereDAOImpl implements EnchereDAO {
+public class EnchereDAOImpl implements IEnchereDAO {
 	private String INSERT = "INSERT INTO ENCHERES (date_enchere,montant_enchere,no_article,no_utilisateur ) VALUES (?,?,?,?)";
 	private String SELECT = "SELECT no_enchere,date_enchere,montant_enchere,no_article,no_utilisateur FROM ENCHERES";
 
