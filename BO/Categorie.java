@@ -12,6 +12,12 @@ public class Categorie {
 		this.libelle = libelle;
 	}
 	
+	public Categorie(int noCategorie, String libelle) {
+		super();
+		this.noCategorie = noCategorie;
+		this.libelle = libelle;
+	}
+	
 	public int getNoCategorie() {
 		return noCategorie;
 	}
