@@ -10,7 +10,7 @@ import fr.eni.eniEncheres.BO.Retrait;
 
 public class RetraitDAOImpl implements IRetraitDAO {
 	private final String SELECT_BY_NO_ARTICLE = "SELECT * FROM RETRAITS WHERE NO_ARTICLE = ?";
-	private final String INSERT = "INSERT INTO RETRAITS (rue,code_postal,ville) VALUES (?,?,?)";
+	private final String INSERT = "INSERT INTO RETRAITS VALUES (?,?,?,?)";
 	private final String UPDATE = "UPDATE RETRAITS SET rue=?, code_postal=?, ville=? WHERE no_article = ?";
 	private final String DELETE = "DELETE FROM RETRAITS WHERE no_article = ?";
 
@@ -19,16 +19,11 @@ public class RetraitDAOImpl implements IRetraitDAO {
 
 		try (Connection conx = ConnectionProvider.getConnection()) {
 			PreparedStatement req = conx.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-			req.setString(1, retrait.getRue());
-			req.setString(2, retrait.getCodePostal());
-			req.setString(3, retrait.getVille());
-			int nbRows = req.executeUpdate();
-			if (nbRows == 1) {
-				ResultSet rs = req.getGeneratedKeys();
-				if (rs.next()) {
-					retrait.setNoArticle(rs.getInt(1));
-				}
-			}
+			req.setInt(1, retrait.getNoArticle());
+			req.setString(2, retrait.getRue());
+			req.setString(3, retrait.getCodePostal());
+			req.setString(4, retrait.getVille());
+			req.executeUpdate();
 		} catch (SQLException e) {
 			throw new RetraitDALException("Problème d'insertion d'un retrait");
 		}
