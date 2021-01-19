@@ -33,7 +33,6 @@ public class ArticleVenduManagerImpl implements IArticleVenduManager {
 	public List<ArticleVendu> getArticleVendu(Integer noArticle, String categorie) throws ArticleVenduManagerException {
 		return null;
 	}
-
 	@Override
 	public List<ArticleVendu> getListeArticleVenduUser(Integer noUtilisateur) throws ArticleVenduManagerException {
 		// TODO Auto-generated method stub

@@ -60,12 +60,13 @@ public class RegisterServlet extends HttpServlet {
 				// throw new Exception
 				// TODO : dire à visiteur erreur inscription, verifier champs
 			}
-
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getSession().setAttribute("login", request.getParameter("pseudo"));
+			request.getRequestDispatcher("/EncheresServlet").forward(request, response);
+			
 
 		} else {
 
-			request.getRequestDispatcher("register.jsp").forward(request, response);
+			request.getRequestDispatcher("/LoginServlet").forward(request, response);
 
 		}
 
