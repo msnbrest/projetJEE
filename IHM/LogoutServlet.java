@@ -7,17 +7,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.Session;
+
 /**
- * Servlet implementation class EncheresServlet
+ * Servlet implementation class LogoutServlet
  */
-@WebServlet("/EncheresServlet")
-public class EncheresServlet extends HttpServlet {
+@WebServlet("/LogoutServlet")
+public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EncheresServlet() {
+    public LogoutServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,16 +28,10 @@ public class EncheresServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//TODO: a voir avec l equipe, afficher la liste des encheres 
-		//model (info utilisateur : pseudo) pour affichage "Bonjour pseudo"
-//		EncheresModel model = new EncheresModel();
-//		model.setPseudo(request.getSession().getAttribute("login").toString());
-//		request.setAttribute("model", model);
-		request.getRequestDispatcher("index.jsp").forward(request, response);
-}
-	
-	 
 
+		request.getSession().invalidate();
+		request.getRequestDispatcher("/EncheresServlet").forward(request, response);
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

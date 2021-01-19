@@ -18,7 +18,7 @@ public class DAOFact {
 		return new RetraitDAOImpl();
 	}
 
-	public static IUtilisateurDao getUtilisateurDAO() {
-		return new UtilisateurDaoImpl();
+	public static IUtilisateurDAO getUtilisateurDAO() {
+		return new UtilisateurDAOImpl();
 	}
 }
