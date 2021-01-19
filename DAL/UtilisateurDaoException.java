@@ -1,8 +1,13 @@
 package fr.eni.eniEncheres.DAL;
 
-public class UtilisateurDaoException extends Exception {
+public class UtilisateurDAOException extends Exception {
 
-	public UtilisateurDaoException(String message) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public UtilisateurDAOException(String message) {
 		super(message);
 	}
 }

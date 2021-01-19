@@ -4,13 +4,14 @@ import java.util.List;
 
 import fr.eni.eniEncheres.BO.Utilisateur;
 
-public interface IUtilisateurDao {
+public interface IUtilisateurDAO {
 	
-	public Utilisateur create(Utilisateur utilisateur) throws UtilisateurDaoException; 
-	public List<Utilisateur> getAllUsers() throws UtilisateurDaoException;
-	public void deleteUser(Integer Id) throws UtilisateurDaoException;
-	public List<Utilisateur> getUserByMC(String mc) throws UtilisateurDaoException; 
-	public Utilisateur getUserById(Integer id) throws UtilisateurDaoException; 
-	public Utilisateur updateUser(Utilisateur utilisateur) throws UtilisateurDaoException; 
-
+	public Utilisateur create(Utilisateur utilisateur) throws UtilisateurDAOException; 
+	public List<Utilisateur> getAllUsers() throws UtilisateurDAOException;
+	public void deleteUser(Integer Id) throws UtilisateurDAOException;
+	public List<Utilisateur> getUserByMC(String mc) throws UtilisateurDAOException; 
+	public Utilisateur getUserById(Integer id) throws UtilisateurDAOException; 
+	public Utilisateur updateUser(Utilisateur utilisateur) throws UtilisateurDAOException; 
+	public Utilisateur getUserByIdentifiant(String identifiant) throws UtilisateurDAOException;
+	
 }

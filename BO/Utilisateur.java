@@ -40,7 +40,9 @@ public class Utilisateur {
 	}
 
 	public void setNoUtilisateur(Integer noUtilisateur) {
-		this.noUtilisateur = noUtilisateur;
+		if (noUtilisateur > 0) {
+			this.noUtilisateur = noUtilisateur;
+		}
 	}
 
 	public String getPseudo() {
