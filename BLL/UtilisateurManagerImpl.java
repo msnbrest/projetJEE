@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.eniEncheres.BO.Utilisateur;
-import fr.eni.eniEncheres.DAL.IUtilisateurDao;
-import fr.eni.eniEncheres.DAL.UtilisateurDaoException;
-import fr.eni.eniEncheres.DAL.UtilisateurDaoFactory;
+import fr.eni.eniEncheres.DAL.IUtilisateurDAO;
+import fr.eni.eniEncheres.DAL.UtilisateurDAOException;
+import fr.eni.eniEncheres.DAL.UtilisateurDAOFactory;
 
 public class UtilisateurManagerImpl implements IUtilisateurManager {
 	
-	private IUtilisateurDao userDao = UtilisateurDaoFactory.getDao();
+	private IUtilisateurDAO userDao = UtilisateurDAOFactory.getDao();
 
 	@Override
 	public Utilisateur CreateUtilisteur(Utilisateur utilisateur) throws UtilisateurBLLException {
 		try {
 			userDao.create(utilisateur);
-		} catch (UtilisateurDaoException e) {
+		} catch (UtilisateurDAOException e) {
 			e.printStackTrace();
 			throw new UtilisateurBLLException("probleme Bll exception lors de la creation");
 			
@@ -29,7 +29,7 @@ public class UtilisateurManagerImpl implements IUtilisateurManager {
 		List<Utilisateur> users = new ArrayList<Utilisateur>();
 		try {
 			users = userDao.getAllUsers();
-		} catch (UtilisateurDaoException e) {
+		} catch (UtilisateurDAOException e) {
 			throw new UtilisateurBLLException(e.getMessage());
 //			e.printStackTrace();
 		}
@@ -40,7 +40,7 @@ public class UtilisateurManagerImpl implements IUtilisateurManager {
 	public void deleteUtilisateur(Integer id) throws UtilisateurBLLException {
 		try {
 			userDao.deleteUser(id);
-		} catch (UtilisateurDaoException e) {
+		} catch (UtilisateurDAOException e) {
 //			e.printStackTrace();
 			throw new UtilisateurBLLException(e.getMessage());
 		
@@ -55,11 +55,22 @@ public class UtilisateurManagerImpl implements IUtilisateurManager {
 	}
 
 	@Override
+	public Utilisateur getUserByIdentifiant(String identifiant) throws UtilisateurBLLException {
+		Utilisateur user = new Utilisateur();
+		try {
+			user = userDao.getUserByIdentifiant(identifiant);
+		} catch (UtilisateurDAOException e) {
+			throw new UtilisateurBLLException(e.getMessage());
+		}
+		return user;
+	}
+
+	@Override
 	public List<Utilisateur> getUserByMC(String mc) throws UtilisateurBLLException {
 		List <Utilisateur> users = new ArrayList<Utilisateur>();
 		try {
 			users = userDao.getUserByMC(mc);
-		} catch (UtilisateurDaoException e) {
+		} catch (UtilisateurDAOException e) {
 //			e.printStackTrace();
 		throw new UtilisateurBLLException(e.getMessage());
 			

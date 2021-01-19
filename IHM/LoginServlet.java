@@ -30,11 +30,10 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		if(request.getParameter("identifiant") != null){
-			request.getSession().setAttribute("login", request.getParameter("nom"));
+			// TODO : retenir l'id dans session attribute
+			request.getSession().setAttribute("login", request.getParameter("identifiant"));
 			request.getRequestDispatcher("/EncheresServlet").forward(request, response);
-			
-		
-				
+					
 		}else {
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 			
