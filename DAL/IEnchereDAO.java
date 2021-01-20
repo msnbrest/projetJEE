@@ -8,7 +8,9 @@ public interface IEnchereDAO {
 
 	public Enchere getEnchereByArticleId(int id) throws EnchereDALException;
 
-	public Enchere getEnchereByUtilisateurId(int id) throws EnchereDALException;
+	public Enchere getEnchereByUtilisateurIdInSale(int noArticle) throws EnchereDALException;
+
+	public Enchere getEnchereByUtilisateurIdAfterSale(int noArticle) throws EnchereDALException;
 
 	public void deleteEnchere(Integer id) throws EnchereDALException;
 

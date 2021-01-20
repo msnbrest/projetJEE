@@ -7,6 +7,7 @@ import fr.eni.eniEncheres.BO.ArticleVendu;
 
 public class IndexModel {
 	private List<ArticleVendu> lstArticleVendu = new ArrayList<ArticleVendu>();
+private String message;
 	
 	public IndexModel() {
 
@@ -23,6 +24,14 @@ public class IndexModel {
 
 	public void setLstArticleVendu(List<ArticleVendu> lstArticleVendu) {
 		this.lstArticleVendu = lstArticleVendu;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	@Override

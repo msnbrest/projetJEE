@@ -39,7 +39,7 @@ public class EnchereManagerImpl implements IEnchereManager {
 
 		Enchere enchere = new Enchere();
 		try {
-			enchere = userDao.getEnchereByUtilisateurId(noArticle);//TODO : by in sale
+			enchere = userDao.getEnchereByUtilisateurIdInSale(noArticle);//TODO : by in sale
 		} catch (EnchereDALException e) {
 			throw new EnchereBLLException(e.getMessage());
 		}
@@ -52,7 +52,7 @@ public class EnchereManagerImpl implements IEnchereManager {
 
 		Enchere enchere = new Enchere();
 		try {
-			enchere = userDao.getEnchereByUtilisateurId(noArticle);//TODO : by after sale
+			enchere = userDao.getEnchereByUtilisateurIdAfterSale(noArticle);//TODO : by after sale
 		} catch (EnchereDALException e) {
 			throw new EnchereBLLException(e.getMessage());
 		}
