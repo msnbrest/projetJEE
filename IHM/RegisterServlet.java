@@ -15,7 +15,7 @@ import fr.eni.eniEncheres.BO.Utilisateur;
 /**
  * Servlet implementation class RegisterServlet
  */
-@WebServlet("/RegisterServlet")
+@WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private IUtilisateurManager manager = UtilisateurSingleton.getInstance();
@@ -61,12 +61,12 @@ public class RegisterServlet extends HttpServlet {
 				// TODO : dire à visiteur erreur inscription, verifier champs
 			}
 			request.getSession().setAttribute("login", request.getParameter("pseudo"));
-			request.getRequestDispatcher("/EncheresServlet").forward(request, response);
+			request.getRequestDispatcher("/index").forward(request, response);
 			
 
 		} else {
 
-			request.getRequestDispatcher("/LoginServlet").forward(request, response);
+			request.getRequestDispatcher("register.jsp").forward(request, response);
 
 		}
 

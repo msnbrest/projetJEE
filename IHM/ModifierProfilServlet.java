@@ -34,7 +34,7 @@ public class ModifierProfilServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		ProfilUtilsateurModel model = new ProfilUtilsateurModel();
+		ProfilUtilisateurModel model = new ProfilUtilisateurModel();
 		Utilisateur utilisateur = new Utilisateur();
 		model.setMessage("coool");
 		if (request.getParameter("Pseudo") == null) {

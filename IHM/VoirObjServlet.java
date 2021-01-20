@@ -7,19 +7,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.Session;
-
 /**
- * Servlet implementation class LogoutServlet
+ * Servlet implementation class name1Servlet
  */
-@WebServlet("/logout")
-public class LogoutServlet extends HttpServlet {
+@WebServlet("/objet")
+public class VoirObjServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LogoutServlet() {
+    public VoirObjServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,9 +26,11 @@ public class LogoutServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		VoirObjModel model = new VoirObjModel();
+		// selon id reçu de requette html
+		request.getRequestDispatcher("voir_obj.jsp").forward(request, response);
+		// TODO : dans voir_obj.jsp coder offre minimale
 
-		request.getSession().invalidate();
-		request.getRequestDispatcher("/index").forward(request, response);
 	}
 
 	/**

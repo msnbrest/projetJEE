@@ -2,15 +2,15 @@ package fr.eni.eniEncheres.IHM;
 
 import fr.eni.eniEncheres.BO.Utilisateur;
 
-public class ProfilUtilsateurModel {
+public class ProfilUtilisateurModel {
 
 	private Utilisateur utilisateur;
 	private String message = "";
 
-	public ProfilUtilsateurModel() {
+	public ProfilUtilisateurModel() {
 	}
 
-	public ProfilUtilsateurModel(Utilisateur utilisateur) {
+	public ProfilUtilisateurModel(Utilisateur utilisateur) {
 		super();
 		this.utilisateur = utilisateur;
 	}

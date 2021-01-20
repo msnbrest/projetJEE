@@ -17,6 +17,7 @@ import fr.eni.eniEncheres.BLL.UtilisateurSingleton;
  * Servlet Filter implementation class LoginFilter
  */
 @WebFilter("/EncheresServlet")
+// TODO : faire un vrai lien?
 public class LoginFilter implements Filter {
 	
 	IUtilisateurManager managerBll = UtilisateurSingleton.getInstance();
