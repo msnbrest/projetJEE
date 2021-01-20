@@ -1,10 +1,10 @@
-package fr.eni.projetJEE.BO;
+package fr.eni.eniEncheres.BO;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Enchere {
-	private int IdEnchere = -1;// -1 => pas encore enregistrée
-	private LocalDate dateEnchere;
+	private int IdEnchere;
+	private LocalDateTime dateEnchere;
 	private int montantEnchere;
 	private int noArticle;
 	private int noUtilisateur;
@@ -12,7 +12,7 @@ public class Enchere {
 	public Enchere() {
 	}
 	
-	public Enchere(LocalDate dateEnchere1, int montantEnchere1, int noArticle1, int noUtilisateur1) {
+	public Enchere(LocalDateTime dateEnchere1, int montantEnchere1, int noArticle1, int noUtilisateur1) {
 		super();
 		this.dateEnchere = dateEnchere1;
 		this.montantEnchere = montantEnchere1;
@@ -36,11 +36,11 @@ public class Enchere {
 		this.noUtilisateur = noUtilisateur;
 	}
 
-	public LocalDate getDateEnchere() {
+	public LocalDateTime getDateEnchere() {
 		return dateEnchere;
 	}
 
-	public void setDateEnchere(LocalDate dateEnchere) {
+	public void setDateEnchere(LocalDateTime dateEnchere) {
 		this.dateEnchere = dateEnchere;
 	}
 

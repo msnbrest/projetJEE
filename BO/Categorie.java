@@ -1,10 +1,18 @@
-package fr.eni.projetJEE.BO;
+package fr.eni.eniEncheres.BO;
+
+import java.util.ArrayList;
 
 public class Categorie {
 	private int noCategorie;
 	private String libelle;
+	private ArrayList<ArticleVendu> ListeArticleVendu = new ArrayList<ArticleVendu>();
 
 	public Categorie() {
+	}
+
+	public Categorie(String libelle) {
+		super();
+		this.libelle = libelle;
 	}
 
 	public Categorie(int noCategorie, String libelle) {
@@ -31,7 +39,16 @@ public class Categorie {
 
 	@Override
 	public String toString() {
-		return "Categorie [noCategorie=" + noCategorie + ", libelle=" + libelle + "]";
+		return "Categorie [noCategorie=" + noCategorie + ", libelle=" + libelle + ", ListeArticleVendu="
+				+ ListeArticleVendu + "]";
+	}
+
+	public ArrayList<ArticleVendu> getListeArticleVendu() {
+		return ListeArticleVendu;
+	}
+
+	public void setListeArticleVendu(ArrayList<ArticleVendu> listeArticleVendu1) {
+		ListeArticleVendu = listeArticleVendu1;
 	}
 
 }

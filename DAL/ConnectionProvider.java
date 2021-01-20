@@ -1,4 +1,5 @@
-package fr.eni.projetJEE.DAL;
+package fr.eni.eniEncheres.DAL;
+// dal provider anis
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,10 +12,12 @@ import javax.sql.DataSource;
 
 abstract class ConnectionProvider {
 	private static DataSource dataSource;
-	private static final String URL="jdbc:sqlserver://127.0.0.1;databasename=BDD_EniEncheres;";
+	private static final String URL="jdbc:sqlserver://localhost:1433;databaseName=BDD_EniEncheres";
 	private static final String USER="sa";
-	private static final String PASSWORD="Pa$$w0rd";
+	private static final String PASSWORD="sasa";
+	//private static final String PASSWORD="Pa$$w0rd";
 	private static final String DRIVER="com.microsoft.sqlserver.jdbc.SQLServerDriver";
+
 	/**
 	 * Au chargement de la classe, la DataSource est recherchée dans l'arbre JNDI
 	 */

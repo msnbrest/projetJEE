@@ -1,12 +1,15 @@
 package fr.eni.eniEncheres.DAL;
 
-public class EnchereDALException extends Exception {
+public class ArticleVenduDALException extends Exception {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public EnchereDALException(String message) {
+	public ArticleVenduDALException(String message) {
 		super(message);
 	}
+	
+	
 }
