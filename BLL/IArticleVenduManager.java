@@ -9,18 +9,15 @@ public interface IArticleVenduManager {
 
 	public List<ArticleVendu> getArticleVendu() throws ArticleVenduManagerException;
 	
-	// return noArticle
+	// return Article vendu
 	public ArticleVendu insertArticle(ArticleVendu article) throws ArticleVenduManagerException;
 	
-	
-	public List<ArticleVendu> getArticleVendu(Integer noArticle, String categorie) throws ArticleVenduManagerException;
-	
-	// Obtention de la liste des articles vendus par un utilisateur
-	public List<ArticleVendu> getListeArticleVenduUser(Integer noUtilisateur) throws ArticleVenduManagerException;
-	
+	// recherche d'articles en fonction de son noCategorie et de son nom (Article)
+	public List<ArticleVendu> getArticleVendu(String nomArticle, Integer noCategorie) throws ArticleVenduManagerException;
+
 	// return article vendu
 	public ArticleVendu getArticleVendu(Integer noArticle) throws ArticleVenduManagerException;
 	
 	//return noArticle
-	public Integer updateArticle(ArticleVendu article) throws ArticleVenduManagerException;
+	public Integer updateArticle(Integer noCategorie) throws ArticleVenduManagerException;
 }

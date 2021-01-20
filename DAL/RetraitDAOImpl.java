@@ -55,7 +55,7 @@ public class RetraitDAOImpl implements IRetraitDAO {
 	}
 
 	@Override
-	public void deleteRetrait(Integer id) throws RetraitDALException {
+	public void deleteRetrait(Integer id) throws RetraitDALException {//TODO: mettre Integer noArticle
 
 		try {
 			Connection conx = ConnectionProvider.getConnection();
