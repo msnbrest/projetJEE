@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.eniEncheres.BO.ArticleVendu;
+import fr.eni.eniEncheres.DAL.ArticleVenduDALException;
 import fr.eni.eniEncheres.DAL.DAOFact;
 import fr.eni.eniEncheres.DAL.EnchereDALException;
 import fr.eni.eniEncheres.DAL.IArticleVenduDAO;
@@ -22,10 +23,18 @@ public class ArticleVenduManagerImpl implements IArticleVenduManager {
 			//e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public ArticleVendu insertArticle(ArticleVendu article) throws ArticleVenduManagerException {
-		return dao.insert(article);
+		article.setPrixVente(article.getMiseAPrix());
+		ArticleVendu articleInsertion = article;
+		try {
+			articleInsertion = dao.insert(articleInsertion);
+		} catch (ArticleVenduDALException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return articleInsertion;
 	}
 
 	@Override

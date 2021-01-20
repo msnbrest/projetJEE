@@ -9,7 +9,7 @@ import fr.eni.eniEncheres.BO.Utilisateur;
 
 public interface IArticleVenduDAO {
 
-	public ArticleVendu insert(ArticleVendu article);
+	public ArticleVendu insert(ArticleVendu article) throws ArticleVenduDALException;
 	
 	public void delete(ArticleVendu article) throws EnchereDALException;
 	

@@ -31,7 +31,6 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 	private String SELECT_WHEN_DISCONNECTED = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
-			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() ORDER by date_fin_encheres";
 	private String SELECT_BY_NOM_ARTICLE = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
@@ -52,7 +51,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 	// Réalise l'insertion del'article vendu puis celle du lieu de retrait en
 	// utilisant l'IRetraitDAO
 	@Override
-	public ArticleVendu insert(ArticleVendu article) {
+	public ArticleVendu insert(ArticleVendu article) throws ArticleVenduDALException{
 		try (Connection cnx = ConnectionProvider.getConnection();) {
 			PreparedStatement stmt = cnx.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, article.getNomArticle());
@@ -74,8 +73,9 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				}
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new ArticleVenduDALException("Problème dans l'insertion de l'article au niveau de la dal");
+
 		}
 		System.out.println("noArticle obtenu après insertion : " + article.getNoArticle());
 		// Insertion du lieu de retrait qui intervient après l'insertion de
