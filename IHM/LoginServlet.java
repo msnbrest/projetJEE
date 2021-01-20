@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/LoginServlet")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 		if(request.getParameter("identifiant") != null){
 			// TODO : retenir l'id dans session attribute
 			request.getSession().setAttribute("login", request.getParameter("identifiant"));
-			request.getRequestDispatcher("/EncheresServlet").forward(request, response);
+			request.getRequestDispatcher("/index").forward(request, response);
 					
 		}else {
 			request.getRequestDispatcher("login.jsp").forward(request, response);

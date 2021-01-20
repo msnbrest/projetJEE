@@ -32,13 +32,13 @@ public class RetraitDAOImpl implements IRetraitDAO {
 	}
 
 	@Override
-	public Retrait getRetraitByArticleID(int id) throws RetraitDALException {
+	public Retrait getRetraitByArticleID(int noArticle) throws RetraitDALException {
 
 		Retrait retrait = null;
 
 		try (Connection conx = ConnectionProvider.getConnection()) {
 			PreparedStatement req = conx.prepareStatement(SELECT_BY_NO_ARTICLE);
-			req.setInt(1, id);
+			req.setInt(1, noArticle);
 			ResultSet res = req.executeQuery();
 			if (res.next()) {
 				retrait = new Retrait();
@@ -55,12 +55,12 @@ public class RetraitDAOImpl implements IRetraitDAO {
 	}
 
 	@Override
-	public void deleteRetrait(Integer id) throws RetraitDALException {//TODO: mettre Integer noArticle
+	public void deleteRetrait(Integer noArticle) throws RetraitDALException {//TODO: mettre Integer noArticle
 
 		try {
 			Connection conx = ConnectionProvider.getConnection();
 			PreparedStatement req = conx.prepareStatement(DELETE);
-			req.setInt(1, id);
+			req.setInt(1, noArticle);
 			req.executeUpdate();
 		} catch (SQLException e) {
 			throw new RetraitDALException("Problème de suppression d'un retrait");

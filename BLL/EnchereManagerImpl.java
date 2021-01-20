@@ -22,11 +22,11 @@ public class EnchereManagerImpl implements IEnchereManager {
 	}
 
 	@Override
-	public Enchere getEnchereByArticleId(int id) throws EnchereBLLException {
+	public Enchere getEnchereByArticleId(int noArticle) throws EnchereBLLException {
 
 		Enchere enchere = new Enchere();
 		try {
-			enchere = userDao.getEnchereByArticleId(id);
+			enchere = userDao.getEnchereByArticleId(noArticle);
 		} catch (EnchereDALException e) {
 			throw new EnchereBLLException(e.getMessage());
 		}
@@ -35,11 +35,24 @@ public class EnchereManagerImpl implements IEnchereManager {
 	}
 
 	@Override
-	public Enchere getEnchereByUtilisateurId(int id) throws EnchereBLLException {
+	public Enchere getEnchereByUtilisateurIdInSale(int noArticle) throws EnchereBLLException {
 
 		Enchere enchere = new Enchere();
 		try {
-			enchere = userDao.getEnchereByUtilisateurId(id);
+			enchere = userDao.getEnchereByUtilisateurId(noArticle);//TODO : by in sale
+		} catch (EnchereDALException e) {
+			throw new EnchereBLLException(e.getMessage());
+		}
+		return enchere;
+
+	}
+
+	@Override
+	public Enchere getEnchereByUtilisateurIdAfterSale(int noArticle) throws EnchereBLLException {
+
+		Enchere enchere = new Enchere();
+		try {
+			enchere = userDao.getEnchereByUtilisateurId(noArticle);//TODO : by after sale
 		} catch (EnchereDALException e) {
 			throw new EnchereBLLException(e.getMessage());
 		}
