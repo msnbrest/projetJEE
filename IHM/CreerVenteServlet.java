@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class EncheresServlet
+ * Servlet implementation class name1Servlet
  */
-@WebServlet("/EncheresServlet")
-public class EncheresServlet extends HttpServlet {
+@WebServlet("/creer_vente")
+public class CreerVenteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EncheresServlet() {
+    public CreerVenteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,16 +26,14 @@ public class EncheresServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//TODO: a voir avec l equipe, afficher la liste des encheres 
-		//model (info utilisateur : pseudo) pour affichage "Bonjour pseudo"
-//		EncheresModel model = new EncheresModel();
-//		model.setPseudo(request.getSession().getAttribute("login").toString());
-//		request.setAttribute("model", model);
-		request.getRequestDispatcher("index.jsp").forward(request, response);
-}
-	
-	 
+		CreerVenteModel model = new CreerVenteModel();
+		
+		// si formulaire contient adresse autre que adresse client, alors ajouter un retrait, sinon osef car adresse déjà client 
+		
+		request.getRequestDispatcher("creer_vente.jsp").forward(request, response);
+		// TODO : creer_vente.jsp coder model.article.no pour annuler la vente.
 
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
