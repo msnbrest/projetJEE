@@ -31,10 +31,13 @@ public class ArticleVenduManagerImpl implements IArticleVenduManager {
 	@Override
 	public List<ArticleVendu> getArticleVendu(String nomArticle, Integer noCategorie)
 			throws ArticleVenduManagerException {
-		
-		
-		return null;
+		try {
+			return dao.getAllByNomArticleAndNoCategorie(nomArticle, noCategorie);
+		} catch (EnchereDALException e) {
+			throw new ArticleVenduManagerException("Erreur de récupération des articles au niveau de la BLL");
+		}
 	}
+	
 	@Override
 	public ArticleVendu getArticleVendu(Integer noArticle) throws ArticleVenduManagerException {
 		// TODO Auto-generated method stub
