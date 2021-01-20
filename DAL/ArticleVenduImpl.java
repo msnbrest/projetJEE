@@ -102,6 +102,14 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 			throw new EnchereDALException("Probleme au niveau de DAL pour suprimer un article");
 
 		}
+		
+		IRetraitDAO daoRetrait = DAOFact.getRetraitDAO();
+		try {
+			daoRetrait.deleteRetrait(article.getNoArticle());
+		} catch (RetraitDALException e) {
+			throw new EnchereDALException("Erreur dans le delete du lieu de retrait, arrivé au niveau de la classe articleVendu");
+			
+		}
 	}
 
 	@Override
