@@ -12,7 +12,8 @@ import fr.eni.eniEncheres.BO.Enchere;
 public class EnchereDAOImpl implements IEnchereDAO {
 	private final String INSERT = "INSERT INTO ENCHERES (date_enchere,montant_enchere,no_article,no_utilisateur ) VALUES (?,?,?,?)";
 	private final String SELECT_BY_NO_ARTICLE = "SELECT * FROM ENCHERES WHERE NO_ARTICLE = ?";
-	private final String SELECT_BY_NO_UTILISATEUR = "SELECT * FROM ENCHERES WHERE NO_UTILISATEUR = ?";
+	private final String SELECT_BY_NO_UTILISATEUR_INSALE = "SELECT * FROM ENCHERES WHERE NO_UTILISATEUR = ? AND date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() ORDER by date_fin_encheres";
+	private final String SELECT_BY_NO_UTILISATEUR_AFTERSALE = "SELECT * FROM ENCHERES WHERE NO_UTILISATEUR = ? AND date_fin_encheres < GETDATE() ORDER by date_fin_encheres";
 	private final String UPDATE = "UPDATE ENCHERES SET date_enchere=?, montant_enchere=?, no_article=?, no_utilisateur=? WHERE NO_ENCHERE = ?";
 	private final String DELETE = "DELETE FROM ENCHERES WHERE NO_ENCHERE = ?";
 
@@ -65,13 +66,37 @@ public class EnchereDAOImpl implements IEnchereDAO {
 	}
 
 	@Override
-	public Enchere getEnchereByUtilisateurId(int id) throws EnchereDALException {
+	public Enchere getEnchereByUtilisateurIdInSale(int noArticle) throws EnchereDALException {
 
 		Enchere enchere = null;
 
 		try (Connection conx = ConnectionProvider.getConnection()) {
-			PreparedStatement req = conx.prepareStatement(SELECT_BY_NO_UTILISATEUR);
-			req.setInt(1, id);
+			PreparedStatement req = conx.prepareStatement(SELECT_BY_NO_UTILISATEUR_INSALE);
+			req.setInt(1, noArticle);
+			ResultSet res = req.executeQuery();
+			if (res.next()) {
+				enchere = new Enchere();
+				enchere.setNoArticle(res.getInt("no_enchere"));
+				enchere.setDateEnchere(res.getTimestamp("date_enchere").toLocalDateTime());
+				enchere.setMontantEnchere(res.getInt("montant_enchere"));
+				enchere.setNoArticle(res.getInt("no_article"));
+				enchere.setNoUtilisateur(res.getInt("no_utilisateur"));
+			}
+		} catch (SQLException e) {
+			throw new EnchereDALException("Problème de lecture d'une enchère");
+		}
+
+		return enchere;
+	}
+
+	@Override
+	public Enchere getEnchereByUtilisateurIdAfterSale(int noArticle) throws EnchereDALException {
+
+		Enchere enchere = null;
+
+		try (Connection conx = ConnectionProvider.getConnection()) {
+			PreparedStatement req = conx.prepareStatement(SELECT_BY_NO_UTILISATEUR_AFTERSALE);
+			req.setInt(1, noArticle);
 			ResultSet res = req.executeQuery();
 			if (res.next()) {
 				enchere = new Enchere();

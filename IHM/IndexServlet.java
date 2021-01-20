@@ -35,22 +35,26 @@ public class IndexServlet extends HttpServlet {
 		IArticleVenduManager managerArticleVendu = ArticleVenduManagerSing.getInstance();
 		IndexModel model = new IndexModel();
 
-		if (request.getParameter("rechercheNom") != null || request.getParameter("noCategorie") != null) {
-			if(request.getParameter("rechercheNom")!= null && request.getParameter("noCategorie")!= null) {
-					try {
-						model.setLstArticleVendu(managerArticleVendu.getArticleVendu(request.getParameter("rechercheNom"),Integer.parseInt(request.getParameter("noCategorie"))));
-						System.out.println(Integer.parseInt(request.getParameter("noCategorie")));
-					} catch (NumberFormatException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ArticleVenduManagerException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			}else if (request.getParameter("noCategorie")!= null) {
+		if (request.getParameter("rechercheNom") != null) {
+			// has formulaire ? go !
+			
+			if (!request.getParameter("noCategorie").equals("") && request.getParameter("rechercheNom").equals("")) {
+//que no et nom
+			} else if (!request.getParameter("noCategorie").equals("") && !request.getParameter("rechercheNom").equals("")) {
 				
+				try {
+					model.setLstArticleVendu(managerArticleVendu.getArticleVendu(request.getParameter("rechercheNom"),
+							Integer.parseInt(request.getParameter("noCategorie"))));
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ArticleVenduManagerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
-		
+			
 		} else {
 			try {
 				model.setLstArticleVendu(managerArticleVendu.getArticleVendu());

@@ -39,16 +39,20 @@ public class ProfilUtilisateurServlet extends HttpServlet {
 		String data = "";
 		Utilisateur utilisateur = new Utilisateur();
 
-		if (request.getParameter("name") != null && !request.getParameter("name").equals("")) {
-			//if ((request.getSession().getAttribute("login") != null) && (!(request.getSession().getAttribute("login").toString().equals("")))) {
-				//data = request.getSession().getAttribute("login").toString();
-			// TODO : nettoyer le code commenté? c'est caca
-			data = request.getParameter("name");
-			
-			model.setMessage("Profil de " + data);
-		} else if (request.getSession().getAttribute("login") != null) {
-			data = request.getSession().getAttribute("login").toString();
-			model.setMessage("Votre profil " + data);
+		if (request.getSession().getAttribute("login") != null) {
+			if (request.getParameter("name") != null && !request.getParameter("name").equals("")) {
+				// if ((request.getSession().getAttribute("login") != null) &&
+				// (!(request.getSession().getAttribute("login").toString().equals("")))) {
+				// data = request.getSession().getAttribute("login").toString();
+				// TODO : nettoyer le code commenté? c'est caca
+				data = request.getParameter("name");
+
+				model.setMessage("Profil de " + data);
+			} else {
+				data = request.getSession().getAttribute("login").toString();
+				model.setMessage("Mon profil");
+				model.setIsme(true);
+			}
 		}
 
 		if (!data.equals("")) {

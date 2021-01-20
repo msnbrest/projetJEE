@@ -36,7 +36,7 @@ public class ModifierProfilServlet extends HttpServlet {
 			throws ServletException, IOException {
 		ProfilUtilisateurModel model = new ProfilUtilisateurModel();
 		Utilisateur utilisateur = new Utilisateur();
-		model.setMessage("coool");
+
 		if (request.getParameter("Pseudo") == null) {
 			try {
 				utilisateur = managerBLL.getUserByIdentifiant(request.getSession().getAttribute("login").toString());
