@@ -19,7 +19,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 	private String INSERT = "INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie) VALUES (?,?,?,?,?,?,?,?)";
 	// private String SELECT_BY_NOM_ARTICLE_NO_CATEGORIE = "Select * From
 	// ARTICLES_VENDUS Where date_fin_encheres >= nom_article like ? AND
-	// no_categorie like ?";
+	// no_categorie = ?";
 	// private String SELECT_BY_NOM_ARTICLE = "Select * From ARTICLES_VENDUS Where
 	// date_fin_encheres >= nom_article like ?";
 	// private String SELECT_BY_NO_CATEGORIE = "Select * From ARTICLES_VENDUS Where
@@ -31,24 +31,28 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 	private String SELECT_WHEN_DISCONNECTED = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
+			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() ORDER by date_fin_encheres";
 	private String SELECT_BY_NOM_ARTICLE = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
+			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() AND nom_article like ? ORDER by date_fin_encheres";
 	private String SELECT_BY_NO_CATEGORIE = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
+			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() AND a.no_categorie like ? ORDER by date_fin_encheres";
 	private String SELECT_BY_NOM_ARTICLE_NO_CATEGORIE = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
+			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() AND a.no_categorie like ? AND nom_article like ? ORDER by date_fin_encheres";
 
 	// Réalise l'insertion del'article vendu puis celle du lieu de retrait en
 	// utilisant l'IRetraitDAO
 	@Override
-	public ArticleVendu insert(ArticleVendu article) throws ArticleVenduDALException{
+	public ArticleVendu insert(ArticleVendu article) {
 		try (Connection cnx = ConnectionProvider.getConnection();) {
 			PreparedStatement stmt = cnx.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, article.getNomArticle());
@@ -70,43 +74,40 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ArticleVenduDALException("Problème dans l'insertion de l'article au niveau de la dal");
-
+			// TODO Auto-generated catch block
 		}
-		System.out.println("noArticle obtenu après insertion : " + article.getNoArticle());
 		// Insertion du lieu de retrait qui intervient après l'insertion de
 		// l'articleVendu
 		IRetraitDAO daoRetrait = DAOFact.getRetraitDAO();
 		try {
 			article.setLieuRetrait(daoRetrait.insertRetrait(article.getLieuRetrait()));
-			System.out.println("Numero fixé dans objet Retrait : " + article.getLieuRetrait());
 		} catch (RetraitDALException e) {
-			e.printStackTrace();
+
 		}
 		return article;
 	}
 
-	public void delete(ArticleVendu article) throws EnchereDALException {
-		try {
-			Connection conx = ConnectionProvider.getConnection();
+	@Override
+	public boolean delete(ArticleVendu article) throws EnchereDALException {
+		
+		try (Connection conx = ConnectionProvider.getConnection()){
 			PreparedStatement req = conx.prepareStatement(DELETE);
 			req.setInt(1, article.getNoArticle());
 			req.executeUpdate();
 
+			IRetraitDAO daoRetrait = DAOFact.getRetraitDAO();
+			try {
+				daoRetrait.deleteRetrait(article.getNoArticle());
+			} catch (RetraitDALException e) {
+				throw new EnchereDALException(
+						"Erreur dans le delete du lieu de retrait, arrivé au niveau de la classe articleVendu ("
+								+ e.getMessage() + ")");
+			}
 		} catch (Exception e) {
-			// e.printStackTrace();
-			throw new EnchereDALException("Probleme au niveau de DAL pour suprimer un article");
-
+			throw new EnchereDALException("Problème pour supprimer un article (" + e.getMessage() + ")");
 		}
 		
-		IRetraitDAO daoRetrait = DAOFact.getRetraitDAO();
-		try {
-			daoRetrait.deleteRetrait(article.getNoArticle());
-		} catch (RetraitDALException e) {
-			throw new EnchereDALException("Erreur dans le delete du lieu de retrait, arrivé au niveau de la classe articleVendu");
-			
-		}
+		return true;
 	}
 
 	@Override
@@ -119,7 +120,8 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 			req.setInt(2, enchere.getIdEnchere());
 			req.executeUpdate();
 		} catch (SQLException e) {
-			throw new EnchereDALException("Problème de mise à jour du prix de vente d'un article");
+			throw new EnchereDALException(
+					"Problème de mise à jour du prix de vente d'un article (" + e.getMessage() + ")");
 		}
 	}
 
@@ -146,15 +148,15 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new EnchereDALException("Problème de mise à jour du prix de vente d'un article");
+			throw new EnchereDALException(
+					"Problème de mise à jour du prix de vente d'un article (" + e.getMessage() + ")");
 		}
 
 		IRetraitDAO daoRetrait = DAOFact.getRetraitDAO();
 		try {
 			article.setLieuRetrait(daoRetrait.insertRetrait(article.getLieuRetrait()));
-			System.out.println("Numero fixé dans objet Retrait : " + article.getLieuRetrait());
 		} catch (RetraitDALException e) {
-			e.printStackTrace();
+
 		}
 		return article;
 	}
@@ -184,7 +186,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				result.add(article);
 			}
 		} catch (Exception e) {
-			throw new EnchereDALException("probléme dans la selection des articles");
+			throw new EnchereDALException("Problème dans la selection des articles (" + e.getMessage() + ")");
 		}
 		return result;
 	}
@@ -216,13 +218,14 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				result.add(article);
 			}
 		} catch (Exception e) {
-			throw new EnchereDALException("probléme dans la selection des articles par nom");
+			throw new EnchereDALException("Problème dans la selection des articles par nom (" + e.getMessage() + ")");
 		}
 		return result;
 	}
 
 	@Override
-	public List<ArticleVendu> getAllByNomArticleAndNoCategorie(String nomArticle, Integer noCategorie) throws EnchereDALException {
+	public List<ArticleVendu> getAllByNomArticleAndNoCategorie(String nomArticle, Integer noCategorie)
+			throws EnchereDALException {
 		List<ArticleVendu> result = new ArrayList<ArticleVendu>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(SELECT_BY_NOM_ARTICLE_NO_CATEGORIE);
@@ -249,7 +252,8 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				result.add(article);
 			}
 		} catch (Exception e) {
-			throw new EnchereDALException("probléme dans la selection des articles par nom et catégorie");
+			throw new EnchereDALException(
+					"Problème dans la selection des articles par nom et catégorie (" + e.getMessage() + ")");
 		}
 		return result;
 	}
@@ -280,7 +284,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				result.add(article);
 			}
 		} catch (Exception e) {
-			throw new EnchereDALException("probléme dans la selection des articles par nom");
+			throw new EnchereDALException("Problème dans la selection des articles par nom (" + e.getMessage() + ")");
 		}
 		return result;
 	}

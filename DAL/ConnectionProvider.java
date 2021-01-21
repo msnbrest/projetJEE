@@ -28,8 +28,7 @@ abstract class ConnectionProvider {
 			context = new InitialContext();
 			ConnectionProvider.dataSource = (DataSource)context.lookup("java:comp/env/jdbc/pool_cnx");
 		} catch (NamingException e) {
-//			e.printStackTrace();
-//			throw new RuntimeException("Impossible d'accéder à la base de données");
+			throw new RuntimeException("Impossible d'accéder à la base de données ("+e.getMessage()+")");
 		}
 	}
 	
@@ -51,9 +50,9 @@ abstract class ConnectionProvider {
 				cnx = DriverManager.getConnection(URL, USER, PASSWORD);
 			}
 			catch(SQLException e){
-				throw new SQLException("Impossible d'obtenir une connexion:"+e.getMessage());
+				throw new SQLException("Impossible d'obtenir une connexion: "+e.getMessage());
 			} catch (ClassNotFoundException e) {
-				throw new SQLException("Problème de Driver:"+e.getMessage());
+				throw new SQLException("Problème de Driver: "+e.getMessage());
 			}
 			return cnx;			
 		}
