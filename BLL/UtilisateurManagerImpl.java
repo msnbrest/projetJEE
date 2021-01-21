@@ -9,7 +9,7 @@ import fr.eni.eniEncheres.DAL.UtilisateurDAOException;
 import fr.eni.eniEncheres.DAL.UtilisateurDAOFactory;
 
 public class UtilisateurManagerImpl implements IUtilisateurManager {
-	
+
 	private IUtilisateurDAO userDao = UtilisateurDAOFactory.getDao();
 
 	@Override
@@ -19,7 +19,7 @@ public class UtilisateurManagerImpl implements IUtilisateurManager {
 		} catch (UtilisateurDAOException e) {
 			e.printStackTrace();
 			throw new UtilisateurBLLException("probleme Bll exception lors de la creation");
-			
+
 		}
 		return utilisateur;
 	}
@@ -43,15 +43,21 @@ public class UtilisateurManagerImpl implements IUtilisateurManager {
 		} catch (UtilisateurDAOException e) {
 //			e.printStackTrace();
 			throw new UtilisateurBLLException(e.getMessage());
-		
+
 		}
 
 	}
 
 	@Override
-	public Utilisateur updateUtilisateur(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Utilisateur updateUtilisateur(Integer id) throws UtilisateurBLLException {
+		Utilisateur user = new Utilisateur();
+		try {
+			user = userDao.updateUser(user.getNoUtilisateur());
+		} catch (UtilisateurDAOException e) {
+			e.printStackTrace();
+			throw new UtilisateurBLLException(e.getMessage());
+		}
+		return user;
 	}
 
 	@Override
@@ -67,15 +73,29 @@ public class UtilisateurManagerImpl implements IUtilisateurManager {
 
 	@Override
 	public List<Utilisateur> getUserByMC(String mc) throws UtilisateurBLLException {
-		List <Utilisateur> users = new ArrayList<Utilisateur>();
+		List<Utilisateur> users = new ArrayList<Utilisateur>();
 		try {
 			users = userDao.getUserByMC(mc);
 		} catch (UtilisateurDAOException e) {
 //			e.printStackTrace();
-		throw new UtilisateurBLLException(e.getMessage());
-			
+			throw new UtilisateurBLLException(e.getMessage());
+
 		}
-		return users ;
+		return users;
 	}
 
+	@Override
+	public Boolean sauthentifier(String identifiant, String mdp) throws UtilisateurBLLException {
+		boolean status =false;
+
+		try {
+			status = userDao.sauthentifier(identifiant, mdp);
+	
+		} catch (UtilisateurDAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new UtilisateurBLLException(e.getMessage());
+		}
+		return status;
+	}
 }

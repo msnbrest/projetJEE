@@ -4,52 +4,78 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.eniEncheres.BO.ArticleVendu;
+import fr.eni.eniEncheres.DAL.ArticleVenduDALException;
 import fr.eni.eniEncheres.DAL.DAOFact;
 import fr.eni.eniEncheres.DAL.EnchereDALException;
 import fr.eni.eniEncheres.DAL.IArticleVenduDAO;
 
 public class ArticleVenduManagerImpl implements IArticleVenduManager {
 	private IArticleVenduDAO dao = DAOFact.getArticleVenduDAO();
+	
 	private List<ArticleVendu> listArticles = new ArrayList<ArticleVendu>();
 	
 	public List<ArticleVendu> getArticleVendu() throws ArticleVenduManagerException {
-		
 		try {
 			listArticles = dao.getAll();
 			return listArticles;
 		} catch (EnchereDALException e) {
-			throw new ArticleVenduManagerException("Probl�me dans la r�cup�ration des articles");
+			throw new ArticleVenduManagerException("Problème dans la récupération des articles");
 			//e.printStackTrace();
 		}
-		
 	}
-	
+
 	@Override
 	public ArticleVendu insertArticle(ArticleVendu article) throws ArticleVenduManagerException {
-		return dao.insert(article);
+		article.setPrixVente(article.getMiseAPrix());
+		ArticleVendu articleInsertion = article;
+		try {
+			articleInsertion = dao.insert(articleInsertion);
+		} catch (ArticleVenduDALException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return articleInsertion;
 	}
 
 	@Override
-	public List<ArticleVendu> getArticleVendu(Integer noArticle, String categorie) throws ArticleVenduManagerException {
-		return null;
+	public List<ArticleVendu> getArticleVendu(String nomArticle, Integer noCategorie)
+			throws ArticleVenduManagerException {
+		try {
+			return dao.getAllByNomArticleAndNoCategorie(nomArticle, noCategorie);
+		} catch (EnchereDALException e) {
+			throw new ArticleVenduManagerException("Erreur de récupération des articles au niveau de la BLL");
+		}
 	}
+	
 	@Override
-	public List<ArticleVendu> getListeArticleVenduUser(Integer noUtilisateur) throws ArticleVenduManagerException {
+	public Integer updateArticle(Integer noCategorie) throws ArticleVenduManagerException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArticleVendu getArticleVendu(Integer noArticle) throws ArticleVenduManagerException {
+	public List<ArticleVendu> getArticleVendu(String nomArticle) throws ArticleVenduManagerException {
+		try {
+			return dao.getAllByNomArticle(nomArticle);
+		} catch (EnchereDALException e) {
+			throw new ArticleVenduManagerException("Erreur dans la récupération des articles aux niveau de la BLL");
+		}
+	}
+
+	@Override
+	public List<ArticleVendu> getArticleVendu(Integer noCategorie) throws ArticleVenduManagerException {
+		try {
+			return dao.getAllByNoCategorie(noCategorie);
+		} catch (EnchereDALException e) {
+			throw new ArticleVenduManagerException("Erreur dans la récupération des articles aux niveau de la BLL");
+		}
+	}
+
+	@Override
+	public ArticleVendu getArticleVenduByNoArticle(Integer noArticle) throws ArticleVenduManagerException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
-
-	@Override
-	public Integer updateArticle(ArticleVendu article) throws ArticleVenduManagerException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

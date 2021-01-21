@@ -4,24 +4,33 @@ import java.util.List;
 
 import fr.eni.eniEncheres.BO.ArticleVendu;
 import fr.eni.eniEncheres.BO.Categorie;
+import fr.eni.eniEncheres.BO.Enchere;
 import fr.eni.eniEncheres.BO.Utilisateur;
 
 public interface IArticleVenduDAO {
 
-	public ArticleVendu insert(ArticleVendu article);
-	
-	public List<ArticleVendu> getAll() throws EnchereDALException;
+	public ArticleVendu insert(ArticleVendu article) throws ArticleVenduDALException;
 	
 	public void delete(ArticleVendu article) throws EnchereDALException;
 	
+	public void update(Enchere enchere) throws EnchereDALException;
 	
+	public ArticleVendu updateArticleVendu(ArticleVendu article) throws EnchereDALException;
 	
-	// TODO voir la methode à mettre en place selon moi
-	public ArticleVendu update(Integer a);
-
-	//Give the list of itmes sold using the name without categorie field
-	public List<ArticleVendu> getListeArticleVenduUser(String researchNameItem);
+	public List<ArticleVendu> getAll() throws EnchereDALException;
 	
-	//Give the same result using the close other methode but using another field
-	public List<ArticleVendu> getListeArticleVenduUser(String researchNameItem, Categorie noCat);
+	public List<ArticleVendu> getAllByNomArticle(String nomArticle) throws EnchereDALException;
+	
+	public List<ArticleVendu> getAllByNomArticleAndNoCategorie(String nomArticle, Integer noCategorie) throws EnchereDALException;
+	
+	public List<ArticleVendu> getAllByNoCategorie(Integer noCategorie) throws EnchereDALException;
+	
+	public ArticleVendu getByID(Integer noArticle) throws EnchereDALException;
+	
+	public List<ArticleVendu> getAllByNoUtilisateurBeforeSale(Integer noUtilisateur) throws EnchereDALException;
+	
+	public List<ArticleVendu> getAllByNoUtilisateurInSale(Integer noUtilisateur) throws EnchereDALException;
+	
+	public List<ArticleVendu> getAllByNoUtilisateurAfterSale(Integer noUtilisateur) throws EnchereDALException;
+	
 }

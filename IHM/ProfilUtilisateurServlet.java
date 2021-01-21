@@ -15,7 +15,7 @@ import fr.eni.eniEncheres.BO.Utilisateur;
 /**
  * Servlet implementation class ProfilUtilisateurServlet
  */
-@WebServlet("/afficherProfil")
+@WebServlet("/profil")
 public class ProfilUtilisateurServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private IUtilisateurManager managerBLL = UtilisateurSingleton.getInstance();
@@ -34,7 +34,7 @@ public class ProfilUtilisateurServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		ProfilUtilsateurModel model = new ProfilUtilsateurModel();
+		ProfilUtilisateurModel model = new ProfilUtilisateurModel();
 
 		String data = "";
 		Utilisateur utilisateur = new Utilisateur();

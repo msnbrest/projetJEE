@@ -7,40 +7,56 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni.eniEncheres.BLL.IUtilisateurManager;
+import fr.eni.eniEncheres.BLL.UtilisateurBLLException;
+import fr.eni.eniEncheres.BLL.UtilisateurSingleton;
+import fr.eni.eniEncheres.BO.Utilisateur;
+
 /**
  * Servlet implementation class EncheresServlet
  */
-@WebServlet("/EncheresServlet")
+@WebServlet("/Encheres")
 public class EncheresServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public EncheresServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	EncheresModel model = new EncheresModel();
+	Utilisateur utilisateur = null;
+	IUtilisateurManager managerBll = UtilisateurSingleton.getInstance();
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//TODO: a voir avec l equipe, afficher la liste des encheres 
-		//model (info utilisateur : pseudo) pour affichage "Bonjour pseudo"
-//		EncheresModel model = new EncheresModel();
-//		model.setPseudo(request.getSession().getAttribute("login").toString());
-//		request.setAttribute("model", model);
+	public EncheresServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		try {
+			String current = (String) request.getSession().getAttribute("login");
+			utilisateur = managerBll.getUserByIdentifiant(current);
+			model.setUtilisateur(utilisateur);
+			model.setMessage("Bonjour");
+		} catch (UtilisateurBLLException e) {
+
+			e.printStackTrace();
+		}
+		
+		request.setAttribute("modelEnchere", model);
 		request.getRequestDispatcher("index.jsp").forward(request, response);
-}
-	
-	 
-
+	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

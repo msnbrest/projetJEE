@@ -2,15 +2,16 @@ package fr.eni.eniEncheres.IHM;
 
 import fr.eni.eniEncheres.BO.Utilisateur;
 
-public class ProfilUtilsateurModel {
+public class ProfilUtilisateurModel {
 
 	private Utilisateur utilisateur;
 	private String message = "";
+	private boolean isme = false;
 
-	public ProfilUtilsateurModel() {
+	public ProfilUtilisateurModel() {
 	}
 
-	public ProfilUtilsateurModel(Utilisateur utilisateur) {
+	public ProfilUtilisateurModel(Utilisateur utilisateur) {
 		super();
 		this.utilisateur = utilisateur;
 	}
@@ -31,7 +32,12 @@ public class ProfilUtilsateurModel {
 		this.message += message1+"<br>";
 	}
 
+	public boolean isIsme() {
+		return isme;
+	}
 
-	
-	
+	public void setIsme(boolean isme) {
+		this.isme = isme;
+	}
+
 }
