@@ -18,6 +18,8 @@ import fr.eni.eniEncheres.BO.Utilisateur;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private IUtilisateurManager managerBLL = UtilisateurSingleton.getInstance();
+	ModelLogin modelLogin = new ModelLogin();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -57,10 +59,6 @@ public class LoginServlet extends HttpServlet {
 
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub

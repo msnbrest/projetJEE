@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	ModelLogout model = new ModelLogout();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -26,10 +27,13 @@ public class LogoutServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		request.getSession().invalidate();
-		request.getRequestDispatcher("/index").forward(request, response);
 		
+		
+		request.getSession().invalidate();
+		model.setMessage("Vous etes deconnecté, à Bientôt");
+		
+		request.setAttribute("modelLogout", model);
+		request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
 
 	/**
