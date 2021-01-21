@@ -59,7 +59,6 @@ public class VoirObjServlet extends HttpServlet {
 			// Recup de l'article vendu par no_articleVendu
 			try {
 				article = managerArticleVendu.getArticleVenduByNoArticle(Integer.parseInt(request.getParameter("lot")));
-				
 				// TODO : ceci
 				// managerEnchere.getEnchereByArticleId(noArticle);
 

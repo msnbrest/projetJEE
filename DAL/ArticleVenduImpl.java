@@ -48,7 +48,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 	private String SELECT_BY_NO_ARTICLE = "select DISTINCT a.no_article, nom_article, description,  a.no_categorie, libelle, prix_vente, prix_initial, date_fin_encheres, r.rue, r.code_postal, r.ville, a.no_utilisateur, pseudo from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
-			+ "INNER join RETRAITS r on r.no_article = a.no_article where a.no_article like ?";
+			+ "left join RETRAITS r on r.no_article = a.no_article where a.no_article like ?";//TODO : modified sql (inner join -> left join) voir gilles, by julien
 
 	private String SELECT_MES_VENTES_EN_COURS = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
@@ -92,11 +92,15 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 		}
 		// Insertion du lieu de retrait qui intervient après l'insertion de
 		// l'articleVendu
-		IRetraitDAO daoRetrait = DAOFact.getRetraitDAO();
-		try {
-			article.setLieuRetrait(daoRetrait.insertRetrait(article.getLieuRetrait()));
-		} catch (RetraitDALException e) {
-
+		if (!article.getLieuRetrait().getRue().equals(article.getUtilisateur().getRue())
+				|| !article.getLieuRetrait().getCodePostal().equals(article.getUtilisateur().getCodePostal())
+				|| !article.getLieuRetrait().getVille().equals(article.getUtilisateur().getVille())) {
+			IRetraitDAO daoRetrait = DAOFact.getRetraitDAO();
+			try {
+				article.setLieuRetrait(daoRetrait.insertRetrait(article.getLieuRetrait()));
+			} catch (RetraitDALException e) {
+//TODO : catch
+			}
 		}
 		return article;
 	}
@@ -176,6 +180,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 
 	@Override
 	public List<ArticleVendu> getAll() throws ArticleVenduDALException {
+		
 		List<ArticleVendu> result = new ArrayList<ArticleVendu>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(SELECT_WHEN_DISCONNECTED);
@@ -201,6 +206,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 		} catch (Exception e) {
 			throw new ArticleVenduDALException("Problème dans la selection des articles (" + e.getMessage() + ")");
 		}
+		
 		return result;
 	}
 
@@ -313,7 +319,9 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 			PreparedStatement stmt = cnx.prepareStatement(SELECT_BY_NO_ARTICLE);
 			stmt.setInt(1, noArticle);
 			ResultSet rs = stmt.executeQuery();
+			System.out.println("articleimpldal : ...");
 			while (rs.next()) {
+			
 
 				article.setNoArticle(rs.getInt("no_article"));
 				article.setNomArticle(rs.getString("nom_article"));
