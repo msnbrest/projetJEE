@@ -7,6 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni.eniEncheres.BLL.IUtilisateurManager;
+import fr.eni.eniEncheres.BLL.UtilisateurBLLException;
+import fr.eni.eniEncheres.BLL.UtilisateurSingleton;
+import fr.eni.eniEncheres.BO.Utilisateur;
+
 /**
  * Servlet implementation class LoginServlet
  */
@@ -28,36 +33,28 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		if (request.getParameter("identifiant") != null) {
+		IUtilisateurManager managerBLL = UtilisateurSingleton.getInstance();
+		
+		if(request.getParameter("identifiant") != null && !request.getParameter("identifiant").toString().equals("")){
+			// TODO : retenir l'id dans session attribute
 			
-			if (request.getSession().getAttribute("login") == null) {
-
-				// TODO : retenir l'id dans session attribute
+			System.out.println(request.getParameter("identifiant"));
+			
+			try {
+				Utilisateur utilisateur = new Utilisateur();
+				utilisateur = managerBLL.getUserByIdentifiant(request.getParameter("identifiant"));
 				request.getSession().setAttribute("login", request.getParameter("identifiant"));
-				//request.getSession().setAttribute("id", requette sql u_u);
-				// TODO : ID !!!
-
-			} else {
-
-				// dsl, deja co
+				request.getSession().setAttribute("id", utilisateur.getNoUtilisateur());
 				request.getRequestDispatcher("/index").forward(request, response);
-
+			} catch (UtilisateurBLLException e) {
+				request.getSession().setAttribute("message", "Problème de connexion : "+e.getMessage());
+				request.getRequestDispatcher("login.jsp").forward(request, response);
+				request.getSession().setAttribute("message", "");
 			}
-
-			request.getRequestDispatcher("/index").forward(request, response);
-
-		} else {
-
+		}else {
 			request.getRequestDispatcher("login.jsp").forward(request, response);
-
 		}
-		/*
-		 * TODO : TOUDOU recup infos, demander modele session, creer filtre verif mdp et
-		 * pseudo exist et bon
-		 */
 
-//		request.getRequestDispatcher("login.jsp").forward(request, response);
 	}
 
 	/**

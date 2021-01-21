@@ -215,14 +215,15 @@ public class UtilisateurDAOImpl implements IUtilisateurDAO {
 	public boolean deleteUser(Integer id) throws UtilisateurDAOException {
 
 		try {
-			//TODO : MERDE
-			id=999;
+			// TODO : MERDE
+			id = 999;
 			Connection conx = ConnectionProvider.getConnection();
 			PreparedStatement req = conx.prepareStatement("DELETE FROM UTILISATEURS WHERE no_utilisateur like ?");
 			req.setInt(1, id);
 			req.executeUpdate();
 		} catch (Exception e) {
-			throw new UtilisateurDAOException("Erreur, Suppression impossible d'un utilisateur (" + e.getMessage() + ")");
+			throw new UtilisateurDAOException(
+					"Erreur, Suppression impossible d'un utilisateur (" + e.getMessage() + ")");
 		}
 
 		return true;

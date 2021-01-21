@@ -32,22 +32,18 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 	private String SELECT_WHEN_DISCONNECTED = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
-			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() ORDER by date_fin_encheres";
 	private String SELECT_BY_NOM_ARTICLE = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
-			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() AND nom_article like ? ORDER by date_fin_encheres";
 	private String SELECT_BY_NO_CATEGORIE = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
-			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() AND a.no_categorie like ? ORDER by date_fin_encheres";
 	private String SELECT_BY_NOM_ARTICLE_NO_CATEGORIE = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
-			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() AND a.no_categorie like ? AND nom_article like ? ORDER by date_fin_encheres";
 	String SELECT_BY_NO_ARTICLE = "select DISTINCT a.no_article, nom_article, description,  a.no_categorie, libelle, prix_vente, prix_initial, date_fin_encheres, r.rue, r.code_postal, r.ville, a.no_utilisateur, pseudo from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
@@ -68,7 +64,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 			stmt.setInt(6, article.getPrixVente());
 			// stmt.setInt(7, article.getUtilisateur().getNoUtilisateur());
 			stmt.setInt(7, article.getUtilisateur().getNoUtilisateur());
-			stmt.setInt(8, article.getCategorieArticleVendu().getNoCategorie());
+			stmt.setInt(8, article.getCategorie().getNoCategorie());
 			Integer nbRows = stmt.executeUpdate();
 			if (nbRows == 1) {
 				ResultSet rs = stmt.getGeneratedKeys();
@@ -79,7 +75,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				}
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			throw new ArticleVenduDALException("Problème dans l'insertion de l'article au niveau de la dal");
 		}
 		// Insertion du lieu de retrait qui intervient après l'insertion de
 		// l'articleVendu
@@ -141,7 +137,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 			stmt.setInt(5, article.getMiseAPrix());
 			stmt.setInt(6, article.getPrixVente());
 			stmt.setInt(7, article.getUtilisateur().getNoUtilisateur());
-			stmt.setInt(8, article.getCategorieArticleVendu().getNoCategorie());
+			stmt.setInt(8, article.getCategorie().getNoCategorie());
 			stmt.setInt(9, article.getNoArticle());
 			Integer nbRows = stmt.executeUpdate();
 			if (nbRows == 1) {
@@ -186,7 +182,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				util.setNoUtilisateur(rs.getInt("no_Utilisateur"));
 				util.setPseudo(rs.getString("pseudo"));
 				article.setUtilisateur(util);
-				article.setCategorieArticleVendu(new Categorie(rs.getInt("no_categorie"), ""));
+				article.setCategorie(new Categorie(rs.getInt("no_categorie"), ""));
 				result.add(article);
 			}
 		} catch (Exception e) {
@@ -218,7 +214,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				util.setNoUtilisateur(rs.getInt("no_Utilisateur"));
 				util.setPseudo(rs.getString("pseudo"));
 				article.setUtilisateur(util);
-				article.setCategorieArticleVendu(new Categorie(rs.getInt("no_categorie"), ""));
+				article.setCategorie(new Categorie(rs.getInt("no_categorie"), ""));
 				result.add(article);
 			}
 		} catch (Exception e) {
@@ -253,7 +249,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				util.setNoUtilisateur(rs.getInt("no_Utilisateur"));
 				util.setPseudo(rs.getString("pseudo"));
 				article.setUtilisateur(util);
-				article.setCategorieArticleVendu(new Categorie(rs.getInt("no_categorie"), ""));
+				article.setCategorie(new Categorie(rs.getInt("no_categorie"), ""));
 				result.add(article);
 			}
 		} catch (Exception e) {
@@ -285,7 +281,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				util.setNoUtilisateur(rs.getInt("no_Utilisateur"));
 				util.setPseudo(rs.getString("pseudo"));
 				article.setUtilisateur(util);
-				article.setCategorieArticleVendu(new Categorie(rs.getInt("no_categorie"), ""));
+				article.setCategorie(new Categorie(rs.getInt("no_categorie"), ""));
 				result.add(article);
 			}
 		} catch (Exception e) {
@@ -314,7 +310,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				Categorie categorie = new Categorie();
 				categorie.setNoCategorie(rs.getInt("no_categorie"));
 				categorie.setLibelle(rs.getString("libelle"));
-				article.setCategorieArticleVendu(categorie);
+				article.setCategorie(categorie);
 
 				article.setPrixVente(rs.getInt("prix_vente"));
 				article.setMiseAPrix(rs.getInt("prix_initial"));
