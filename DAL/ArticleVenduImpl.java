@@ -11,6 +11,7 @@ import java.util.List;
 import fr.eni.eniEncheres.BO.ArticleVendu;
 import fr.eni.eniEncheres.BO.Categorie;
 import fr.eni.eniEncheres.BO.Enchere;
+import fr.eni.eniEncheres.BO.Retrait;
 import fr.eni.eniEncheres.BO.Utilisateur;
 
 public class ArticleVenduImpl implements IArticleVenduDAO {
@@ -48,11 +49,15 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
 			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() AND a.no_categorie like ? AND nom_article like ? ORDER by date_fin_encheres";
+	String SELECT_BY_NO_ARTICLE = "select DISTINCT a.no_article, nom_article, description,  a.no_categorie, libelle, prix_vente, prix_initial, date_fin_encheres, r.rue, r.code_postal, r.ville, a.no_utilisateur, pseudo from ARTICLES_VENDUS as a "
+			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
+			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
+			+ "INNER join RETRAITS r on r.no_article = a.no_article where a.no_article like ?";
 
 	// Réalise l'insertion del'article vendu puis celle du lieu de retrait en
 	// utilisant l'IRetraitDAO
 	@Override
-	public ArticleVendu insert(ArticleVendu article) {
+	public ArticleVendu insert(ArticleVendu article) throws ArticleVenduDALException {
 		try (Connection cnx = ConnectionProvider.getConnection();) {
 			PreparedStatement stmt = cnx.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, article.getNomArticle());
@@ -88,9 +93,9 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 	}
 
 	@Override
-	public boolean delete(ArticleVendu article) throws EnchereDALException {
-		
-		try (Connection conx = ConnectionProvider.getConnection()){
+	public boolean delete(ArticleVendu article) throws ArticleVenduDALException {
+
+		try (Connection conx = ConnectionProvider.getConnection()) {
 			PreparedStatement req = conx.prepareStatement(DELETE);
 			req.setInt(1, article.getNoArticle());
 			req.executeUpdate();
@@ -104,14 +109,13 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 								+ e.getMessage() + ")");
 			}
 		} catch (Exception e) {
-			throw new EnchereDALException("Problème pour supprimer un article (" + e.getMessage() + ")");
+			throw new ArticleVenduDALException("Problème pour supprimer un article (" + e.getMessage() + ")");
 		}
-		
 		return true;
 	}
 
 	@Override
-	public void update(Enchere enchere) throws EnchereDALException {
+	public void update(Enchere enchere) throws ArticleVenduDALException {
 
 		try {
 			Connection conx = ConnectionProvider.getConnection();
@@ -120,13 +124,13 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 			req.setInt(2, enchere.getIdEnchere());
 			req.executeUpdate();
 		} catch (SQLException e) {
-			throw new EnchereDALException(
+			throw new ArticleVenduDALException(
 					"Problème de mise à jour du prix de vente d'un article (" + e.getMessage() + ")");
 		}
 	}
 
 	@Override
-	public ArticleVendu updateArticleVendu(ArticleVendu article) throws EnchereDALException {
+	public ArticleVendu updateArticleVendu(ArticleVendu article) throws ArticleVenduDALException {
 
 		try (Connection cnx = ConnectionProvider.getConnection();) {
 			PreparedStatement stmt = cnx.prepareStatement(UPDATE_ARTICLE_VENDU, Statement.RETURN_GENERATED_KEYS);
@@ -148,7 +152,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new EnchereDALException(
+			throw new ArticleVenduDALException(
 					"Problème de mise à jour du prix de vente d'un article (" + e.getMessage() + ")");
 		}
 
@@ -162,7 +166,7 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 	}
 
 	@Override
-	public List<ArticleVendu> getAll() throws EnchereDALException {
+	public List<ArticleVendu> getAll() throws ArticleVenduDALException {
 		List<ArticleVendu> result = new ArrayList<ArticleVendu>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(SELECT_WHEN_DISCONNECTED);
@@ -186,13 +190,13 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				result.add(article);
 			}
 		} catch (Exception e) {
-			throw new EnchereDALException("Problème dans la selection des articles (" + e.getMessage() + ")");
+			throw new ArticleVenduDALException("Problème dans la selection des articles (" + e.getMessage() + ")");
 		}
 		return result;
 	}
 
 	@Override
-	public List<ArticleVendu> getAllByNomArticle(String nomArticle) throws EnchereDALException {
+	public List<ArticleVendu> getAllByNomArticle(String nomArticle) throws ArticleVenduDALException {
 		List<ArticleVendu> result = new ArrayList<ArticleVendu>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(SELECT_BY_NOM_ARTICLE);
@@ -218,14 +222,15 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				result.add(article);
 			}
 		} catch (Exception e) {
-			throw new EnchereDALException("Problème dans la selection des articles par nom (" + e.getMessage() + ")");
+			throw new ArticleVenduDALException(
+					"Problème dans la selection des articles par nom (" + e.getMessage() + ")");
 		}
 		return result;
 	}
 
 	@Override
 	public List<ArticleVendu> getAllByNomArticleAndNoCategorie(String nomArticle, Integer noCategorie)
-			throws EnchereDALException {
+			throws ArticleVenduDALException {
 		List<ArticleVendu> result = new ArrayList<ArticleVendu>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(SELECT_BY_NOM_ARTICLE_NO_CATEGORIE);
@@ -252,14 +257,14 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				result.add(article);
 			}
 		} catch (Exception e) {
-			throw new EnchereDALException(
+			throw new ArticleVenduDALException(
 					"Problème dans la selection des articles par nom et catégorie (" + e.getMessage() + ")");
 		}
 		return result;
 	}
 
 	@Override
-	public List<ArticleVendu> getAllByNoCategorie(Integer noCategorie) throws EnchereDALException {
+	public List<ArticleVendu> getAllByNoCategorie(Integer noCategorie) throws ArticleVenduDALException {
 		List<ArticleVendu> result = new ArrayList<ArticleVendu>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(SELECT_BY_NO_CATEGORIE);
@@ -284,31 +289,75 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 				result.add(article);
 			}
 		} catch (Exception e) {
-			throw new EnchereDALException("Problème dans la selection des articles par nom (" + e.getMessage() + ")");
+			throw new ArticleVenduDALException(
+					"Problème dans la selection des articles par nom (" + e.getMessage() + ")");
 		}
 		return result;
 	}
 
 	@Override
-	public ArticleVendu getByID(Integer noArticle) throws EnchereDALException {
+	public ArticleVendu getByID(Integer noArticle) throws ArticleVenduDALException {
+		ArticleVendu article = new ArticleVendu();
+		List<Enchere> concerne = new ArrayList<Enchere>();
+
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement stmt = cnx.prepareStatement(SELECT_BY_NO_ARTICLE);
+			stmt.setInt(1, noArticle);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+			
+
+				article.setNoArticle(rs.getInt("no_article"));
+				article.setNomArticle(rs.getString("nom_article"));
+				article.setDescription(rs.getString("description"));
+
+				Categorie categorie = new Categorie();
+				categorie.setNoCategorie(rs.getInt("no_categorie"));
+				categorie.setLibelle(rs.getString("libelle"));
+				article.setCategorieArticleVendu(categorie);
+
+				article.setPrixVente(rs.getInt("prix_vente"));
+				article.setMiseAPrix(rs.getInt("prix_initial"));
+				article.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
+
+				Retrait lieuRetrait = new Retrait();
+				lieuRetrait.setRue(rs.getString("rue"));
+				lieuRetrait.setCodePostal(rs.getString("code_postal"));
+				lieuRetrait.setVille(rs.getString("ville"));
+				article.setLieuRetrait(lieuRetrait);
+
+				Utilisateur util = new Utilisateur();
+				util.setNoUtilisateur(rs.getInt("no_Utilisateur"));
+				util.setPseudo(rs.getString("pseudo"));
+				article.setUtilisateur(util);
+
+				IEnchereDAO daoEnchere = DAOFact.getEnchereDAO();
+				Enchere enchere = new Enchere();
+				enchere = daoEnchere.getEnchereAndPseudoByNoArticle(noArticle);
+				concerne.add(enchere);
+
+				article.setConcerne(concerne);
+			}
+		} catch (Exception e) {
+			throw new ArticleVenduDALException("probléme dans la selection des articles par nom");
+		}
+		return article;
+	}
+
+	@Override
+	public List<ArticleVendu> getAllByNoUtilisateurBeforeSale(Integer noUtilisateur) throws ArticleVenduDALException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<ArticleVendu> getAllByNoUtilisateurBeforeSale(Integer noUtilisateur) throws EnchereDALException {
+	public List<ArticleVendu> getAllByNoUtilisateurInSale(Integer noUtilisateur) throws ArticleVenduDALException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<ArticleVendu> getAllByNoUtilisateurInSale(Integer noUtilisateur) throws EnchereDALException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ArticleVendu> getAllByNoUtilisateurAfterSale(Integer noUtilisateur) throws EnchereDALException {
+	public List<ArticleVendu> getAllByNoUtilisateurAfterSale(Integer noUtilisateur) throws ArticleVenduDALException {
 		// TODO Auto-generated method stub
 		return null;
 	}
