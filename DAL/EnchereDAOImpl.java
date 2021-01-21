@@ -17,6 +17,7 @@ public class EnchereDAOImpl implements IEnchereDAO {
 	private final String SELECT_BY_NO_UTILISATEUR_AFTERSALE = "SELECT * FROM ENCHERES WHERE NO_UTILISATEUR like ? AND date_fin_encheres < GETDATE() ORDER by date_fin_encheres";
 	private final String UPDATE = "UPDATE ENCHERES SET date_enchere=?, montant_enchere=?, no_article=?, no_utilisateur=? WHERE NO_ENCHERE like ?";
 	private final String DELETE = "DELETE FROM ENCHERES WHERE NO_ENCHERE like ?";
+	private final String SELECT_PSEUDO_BY_NO_ARTICLE = "select pseudo, montant_enchere From UTILISATEURS as u inner join ENCHERES e on u.no_utilisateur = e.no_utilisateur Where montant_enchere = (select MAX(montant_enchere) from ENCHERES where no_article = ?);";
 
 	@Override
 	public Enchere insertEnchere(Enchere enchere) throws EnchereDALException {
@@ -158,6 +159,28 @@ public class EnchereDAOImpl implements IEnchereDAO {
 		}
 
 		return true;
+	}
+	@Override
+	public Enchere getEnchereAndPseudoByNoArticle(Integer noArticle) throws EnchereDALException {
+		
+		Enchere enchere = new Enchere();
+		
+		try (Connection conx = ConnectionProvider.getConnection()) {
+			PreparedStatement req = conx.prepareStatement(SELECT_PSEUDO_BY_NO_ARTICLE);
+			req.setInt(1, noArticle);
+			ResultSet res = req.executeQuery();
+			if (res.next()) {
+				enchere.setMontantEnchere(res.getInt("montant_enchere"));
+
+				Utilisateur utilisateur = new Utilisateur();
+				utilisateur.setPseudo(res.getString("pseudo"));
+				enchere.setUtilisateur(utilisateur);
+			}
+		} catch (SQLException e) {
+			throw new EnchereDALException("Problème de lecture d'une enchère");
+		}
+
+		return enchere;
 	}
 
 }
