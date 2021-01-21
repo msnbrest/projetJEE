@@ -31,7 +31,6 @@ public class EnchereManagerImpl implements IEnchereManager {
 			throw new EnchereBLLException(e.getMessage());
 		}
 		return enchere;
-
 	}
 
 	@Override

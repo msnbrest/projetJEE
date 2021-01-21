@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import fr.eni.eniEncheres.BO.ArticleVendu;
 import fr.eni.eniEncheres.BO.Enchere;
 
 public class EnchereDAOImpl implements IEnchereDAO {
@@ -16,6 +17,8 @@ public class EnchereDAOImpl implements IEnchereDAO {
 	private final String SELECT_BY_NO_UTILISATEUR_AFTERSALE = "SELECT * FROM ENCHERES WHERE NO_UTILISATEUR = ? AND date_fin_encheres < GETDATE() ORDER by date_fin_encheres";
 	private final String UPDATE = "UPDATE ENCHERES SET date_enchere=?, montant_enchere=?, no_article=?, no_utilisateur=? WHERE NO_ENCHERE = ?";
 	private final String DELETE = "DELETE FROM ENCHERES WHERE NO_ENCHERE = ?";
+	private final String SELECT_PSEUDO_BY_NO_ARTICLE = "select pseudo, montant_enchere from ENCHERES as e where no_article like ? And montant_enchere = (select Max(montant_enchere) from ENCHERES"
+			+ "where no_article like ?)";
 
 	@Override
 	public Enchere insertEnchere(Enchere enchere) throws EnchereDALException {
@@ -144,6 +147,31 @@ public class EnchereDAOImpl implements IEnchereDAO {
 		}
 
 		return enchere;
+	}
+
+	@Override
+	public ArticleVendu getEnchereAndPseudoByNoArticle(Integer noArticle) throws EnchereDALException {
+		
+		try (Connection conx = ConnectionProvider.getConnection()) {
+			PreparedStatement req = conx.prepareStatement(SELECT_PSEUDO_BY_NO_ARTICLE);
+			req.setInt(1, noArticle);
+			req.setInt(2, noArticle);
+			ResultSet res = req.executeQuery();
+			if (res.next()) {
+				ArticleVendu article = new ArticleVendu();
+				article.set
+				enchere.setNoArticle(res.getInt("no_enchere"));
+				enchere.setDateEnchere(res.getTimestamp("date_enchere").toLocalDateTime());
+				enchere.setMontantEnchere(res.getInt("montant_enchere"));
+				enchere.setNoArticle(res.getInt("no_article"));
+				enchere.setNoUtilisateur(res.getInt("no_utilisateur"));
+			}
+		} catch (SQLException e) {
+			throw new EnchereDALException("Problème de lecture d'une enchère");
+		}
+
+		return enchere;
+		return null;
 	}
 
 }

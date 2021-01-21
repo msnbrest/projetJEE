@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.eniEncheres.BO.ArticleVendu;
+import fr.eni.eniEncheres.DAL.ArticleVenduDALException;
 import fr.eni.eniEncheres.DAL.DAOFact;
 import fr.eni.eniEncheres.DAL.EnchereDALException;
 import fr.eni.eniEncheres.DAL.IArticleVenduDAO;
@@ -22,10 +23,18 @@ public class ArticleVenduManagerImpl implements IArticleVenduManager {
 			//e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public ArticleVendu insertArticle(ArticleVendu article) throws ArticleVenduManagerException {
-		return dao.insert(article);
+		article.setPrixVente(article.getMiseAPrix());
+		ArticleVendu articleInsertion = article;
+		try {
+			articleInsertion = dao.insert(articleInsertion);
+		} catch (ArticleVenduDALException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return articleInsertion;
 	}
 
 	@Override
@@ -39,13 +48,31 @@ public class ArticleVenduManagerImpl implements IArticleVenduManager {
 	}
 	
 	@Override
-	public ArticleVendu getArticleVendu(Integer noArticle) throws ArticleVenduManagerException {
+	public Integer updateArticle(Integer noCategorie) throws ArticleVenduManagerException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Integer updateArticle(Integer noCategorie) throws ArticleVenduManagerException {
+	public List<ArticleVendu> getArticleVendu(String nomArticle) throws ArticleVenduManagerException {
+		try {
+			return dao.getAllByNomArticle(nomArticle);
+		} catch (EnchereDALException e) {
+			throw new ArticleVenduManagerException("Erreur dans la récupération des articles aux niveau de la BLL");
+		}
+	}
+
+	@Override
+	public List<ArticleVendu> getArticleVendu(Integer noCategorie) throws ArticleVenduManagerException {
+		try {
+			return dao.getAllByNoCategorie(noCategorie);
+		} catch (EnchereDALException e) {
+			throw new ArticleVenduManagerException("Erreur dans la récupération des articles aux niveau de la BLL");
+		}
+	}
+
+	@Override
+	public ArticleVendu getArticleVenduByNoArticle(Integer noArticle) throws ArticleVenduManagerException {
 		// TODO Auto-generated method stub
 		return null;
 	}

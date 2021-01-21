@@ -1,5 +1,6 @@
 package fr.eni.eniEncheres.DAL;
 
+import fr.eni.eniEncheres.BO.ArticleVendu;
 import fr.eni.eniEncheres.BO.Enchere;
 
 public interface IEnchereDAO {
@@ -15,4 +16,6 @@ public interface IEnchereDAO {
 	public void deleteEnchere(Integer id) throws EnchereDALException;
 
 	public Enchere updateEnchere(Enchere enchere) throws EnchereDALException;
+	
+	public ArticleVendu getEnchereAndPseudoByNoArticle(Integer noArticle) throws EnchereDALException;
 }

@@ -36,12 +36,10 @@ public class IndexServlet extends HttpServlet {
 		IndexModel model = new IndexModel();
 
 		if (request.getParameter("rechercheNom") != null) {
-			// has formulaire ? go !
 			
-			if (!request.getParameter("noCategorie").equals("") && request.getParameter("rechercheNom").equals("")) {
-//que no et nom
-			} else if (!request.getParameter("noCategorie").equals("") && !request.getParameter("rechercheNom").equals("")) {
-				
+			if (!request.getParameter("rechercheNom").equals("") && !request.getParameter("noCategorie").equals("0")) {
+				System.out.println(request.getParameter("rechercheNom"));
+				System.out.println(request.getParameter("noCategorie"));
 				try {
 					model.setLstArticleVendu(managerArticleVendu.getArticleVendu(request.getParameter("rechercheNom"),
 							Integer.parseInt(request.getParameter("noCategorie"))));
@@ -52,9 +50,30 @@ public class IndexServlet extends HttpServlet {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
+			} else if (!request.getParameter("rechercheNom").equals("") && request.getParameter("noCategorie").equals("0")) {
+				try {
+					model.setLstArticleVendu(managerArticleVendu.getArticleVendu(request.getParameter("rechercheNom")));
+					
+				} catch (ArticleVenduManagerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			} else if (request.getParameter("rechercheNom").equals("") && !request.getParameter("noCategorie").equals("0")){
+				try {
+					model.setLstArticleVendu(managerArticleVendu.getArticleVendu(Integer.parseInt(request.getParameter("noCategorie"))));
+					System.out.println("NoCategorie : ");
+				} catch (ArticleVenduManagerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else if (request.getParameter("rechercheNom").equals("") && request.getParameter("noCategorie").equals("0")) {
+				try {
+					model.setLstArticleVendu(managerArticleVendu.getArticleVendu());
+				} catch (ArticleVenduManagerException e) {
+					e.printStackTrace();
+				}
 			}
-			
 		} else {
 			try {
 				model.setLstArticleVendu(managerArticleVendu.getArticleVendu());
