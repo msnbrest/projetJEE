@@ -7,17 +7,17 @@ public class Enchere {
 	private LocalDateTime dateEnchere;
 	private int montantEnchere;
 	private int noArticle;
-	private int noUtilisateur;
+	private Utilisateur utilisateur;
 
 	public Enchere() {
 	}
 	
-	public Enchere(LocalDateTime dateEnchere1, int montantEnchere1, int noArticle1, int noUtilisateur1) {
+	public Enchere(LocalDateTime dateEnchere1, int montantEnchere1, int noArticle1, Utilisateur utilisateur) {
 		super();
 		this.dateEnchere = dateEnchere1;
 		this.montantEnchere = montantEnchere1;
 		this.noArticle = noArticle1;
-		this.noUtilisateur = noUtilisateur1;
+		this.utilisateur = utilisateur;
 	}
 
 	public int getNoArticle() {
@@ -28,12 +28,12 @@ public class Enchere {
 		this.noArticle = noArticle;
 	}
 
-	public int getNoUtilisateur() {
-		return noUtilisateur;
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
 	}
 
-	public void setNoUtilisateur(int noUtilisateur) {
-		this.noUtilisateur = noUtilisateur;
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
 	}
 
 	public LocalDateTime getDateEnchere() {
@@ -63,7 +63,7 @@ public class Enchere {
 	@Override
 	public String toString() {
 		return "Enchere [IdEnchere=" + IdEnchere + ", dateEnchere=" + dateEnchere + ", montantEnchere=" + montantEnchere
-				+ ", noArticle=" + noArticle + ", noUtilisateur=" + noUtilisateur + "]";
+				+ ", noArticle=" + noArticle + ", utilisateur=" + utilisateur + "]";
 	}
 
 }

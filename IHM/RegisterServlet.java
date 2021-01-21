@@ -35,39 +35,62 @@ public class RegisterServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		if (request.getParameter("pseudo") != null) {
+		ProfilUtilisateurModel model = new ProfilUtilisateurModel();
+		Utilisateur utilisateur = new Utilisateur();
+		Boolean logged = false;
 
-			// TODO : exist deja dans BDD pseudo???
-			String pseudo = request.getParameter("pseudo");
-			String prenom = request.getParameter("prenom");
-			String telephone = request.getParameter("telephone");
-			String codepostal = request.getParameter("codepostal");
-			String motdepasse = request.getParameter("motdepasse");
-			// TODO : CRYPTAGE!!!!!
-			// TODO : erreur mdp different
+		if (request.getSession().getAttribute("login") == null) {
 
-			String nom = request.getParameter("nom");
-			String email = request.getParameter("email");
-			String rue = request.getParameter("rue");
-			String ville = request.getParameter("ville");
+			if (request.getParameter("pseudo") != null && request.getParameter("sender").equals("Creer")) {
+				// besoin des infos, sinon les demander
 
-			Utilisateur user1 = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codepostal, ville,
-					motdepasse, 0, false);
+				// TODO : exist deja dans BDD pseudo???
+				String pseudo = request.getParameter("pseudo");
+				String prenom = request.getParameter("prenom");
+				String telephone = request.getParameter("telephone");
+				String codepostal = request.getParameter("codepostal");
+				String motdepasse = request.getParameter("motdepasse");
+				// TODO : CRYPTAGE!!!!!
+				// TODO : erreur mdp different
 
-			try {
-				manager.CreateUtilisteur(user1);
-			} catch (UtilisateurBLLException e) {
-				// throw new Exception
-				// TODO : dire à visiteur erreur inscription, verifier champs
+				String nom = request.getParameter("nom");
+				String email = request.getParameter("email");
+				String rue = request.getParameter("rue");
+				String ville = request.getParameter("ville");
+
+				utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codepostal, ville, motdepasse,
+						0, false);
+
+				// TODO : filtrer si cases remplies
+				if (request.getParameter("motdepasse").equals(request.getParameter("confirmation"))) {
+
+					try {
+						manager.CreateUser(utilisateur);
+						request.getSession().setAttribute("login", request.getParameter("pseudo"));
+						request.getSession().setAttribute("id", utilisateur.getNoUtilisateur());
+						logged = true;
+					} catch (UtilisateurBLLException e) {
+						// TODO : dire à visiteur erreur inscription, verifier champs
+					}
+				} else {
+
+					utilisateur.setMotDePasse("");
+					model.setMessage("Erreur, mots de passe différent");
+				}
+
+				model.setUtilisateur(utilisateur);
+				request.setAttribute("model", model);
 			}
-			request.getSession().setAttribute("login", request.getParameter("pseudo"));
-			request.getRequestDispatcher("/index").forward(request, response);
-			
 
 		} else {
+			// dsl, déjà co
+			logged = true;
+		}
 
+		if (logged) {
+			request.getRequestDispatcher("/index").forward(request, response);
+		} else {
 			request.getRequestDispatcher("register.jsp").forward(request, response);
-
 		}
 
 	}

@@ -5,13 +5,17 @@ import java.util.List;
 import fr.eni.eniEncheres.BO.Utilisateur;
 
 public interface IUtilisateurManager {
-	
-	public Utilisateur CreateUtilisteur(Utilisateur utilisateur) throws UtilisateurBLLException;
-	public List<Utilisateur> getAll() throws UtilisateurBLLException;
-	public List<Utilisateur> getUserByMC(String mc) throws UtilisateurBLLException;
+
+	public Utilisateur CreateUser(Utilisateur utilisateur) throws UtilisateurBLLException;
+
+	public List<Utilisateur> getAllUsers() throws UtilisateurBLLException;
+
+	public List<Utilisateur> getUsersByName(String name) throws UtilisateurBLLException;
+
 	public Utilisateur getUserByIdentifiant(String identifiant) throws UtilisateurBLLException;
-	public void deleteUtilisateur(Integer id) throws UtilisateurBLLException;
-	public Utilisateur updateUtilisateur (Integer id);
-	
-	
+
+	public boolean deleteUser(Integer id) throws UtilisateurBLLException;
+
+	public Utilisateur updateUser(Utilisateur utilisateur) throws UtilisateurBLLException;
+
 }

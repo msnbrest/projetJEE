@@ -15,7 +15,7 @@ public class RetraitManagerImpl implements IRetraitManager {
 		try {
 			userDao.insertRetrait(retrait);
 		} catch (RetraitDALException e) {
-			throw new RetraitBLLException("probleme Bll exception lors de la creation");
+			throw new RetraitBLLException(e.getMessage());
 		}
 		return retrait;
 		

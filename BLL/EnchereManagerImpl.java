@@ -15,7 +15,7 @@ public class EnchereManagerImpl implements IEnchereManager {
 		try {
 			userDao.insertEnchere(enchere);
 		} catch (EnchereDALException e) {
-			throw new EnchereBLLException("probleme Bll exception lors de la creation");
+			throw new EnchereBLLException(e.getMessage());
 		}
 		return enchere;
 

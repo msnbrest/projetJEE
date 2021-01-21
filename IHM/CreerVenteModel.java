@@ -1,11 +1,13 @@
 package fr.eni.eniEncheres.IHM;
 
 import fr.eni.eniEncheres.BO.ArticleVendu;
+import fr.eni.eniEncheres.BO.Utilisateur;
 
 public class CreerVenteModel {
 	private ArticleVendu article;
-	private String message;
-	
+	private Utilisateur utilisateur;
+	private String message = "";
+
 	public CreerVenteModel() {
 	}
 
@@ -22,6 +24,14 @@ public class CreerVenteModel {
 		this.article = article;
 	}
 
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
+
 	public String getMessage() {
 		return message;
 	}
@@ -30,7 +40,5 @@ public class CreerVenteModel {
 		this.message = message;
 	}
 
-	
-	
 // envoyer adresse rue+codepostal+ville à jsp :D
 }

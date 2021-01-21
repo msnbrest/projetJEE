@@ -12,7 +12,7 @@ public interface IEnchereDAO {
 
 	public Enchere getEnchereByUtilisateurIdAfterSale(int noArticle) throws EnchereDALException;
 
-	public void deleteEnchere(Integer id) throws EnchereDALException;
-
 	public Enchere updateEnchere(Enchere enchere) throws EnchereDALException;
+
+	public boolean deleteEnchere(Integer id) throws EnchereDALException;
 }

@@ -28,11 +28,16 @@ public class VoirObjServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
+		//if (request.getSession().getAttribute("login")==null) {
+		
+		//xxxx
 		VoirObjModel model = new VoirObjModel();
 		// TODO : si connécté
 		// alors charger objet selon id reçu de requette html
 		// sinon rediriger vers login
+		//xxxx
+		request.setAttribute("model", model);
 		request.getRequestDispatcher("voir_obj.jsp").forward(request, response);
 		// TODO : dans voir_obj.jsp coder offre minimale
 

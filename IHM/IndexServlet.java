@@ -47,10 +47,8 @@ public class IndexServlet extends HttpServlet {
 							Integer.parseInt(request.getParameter("noCategorie"))));
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
 				} catch (ArticleVenduManagerException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 
 			}
@@ -58,9 +56,8 @@ public class IndexServlet extends HttpServlet {
 		} else {
 			try {
 				model.setLstArticleVendu(managerArticleVendu.getArticleVendu());
-				System.out.println(model.getLstArticleVendu());
 			} catch (ArticleVenduManagerException e) {
-				e.printStackTrace();
+
 			}
 		}
 

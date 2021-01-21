@@ -18,8 +18,7 @@ public class ArticleVenduManagerImpl implements IArticleVenduManager {
 			listArticles = dao.getAll();
 			return listArticles;
 		} catch (EnchereDALException e) {
-			throw new ArticleVenduManagerException("Problème dans la récupération des articles");
-			//e.printStackTrace();
+			throw new ArticleVenduManagerException(e.getMessage());
 		}
 	}
 	
@@ -34,7 +33,7 @@ public class ArticleVenduManagerImpl implements IArticleVenduManager {
 		try {
 			return dao.getAllByNomArticleAndNoCategorie(nomArticle, noCategorie);
 		} catch (EnchereDALException e) {
-			throw new ArticleVenduManagerException("Erreur de récupération des articles au niveau de la BLL");
+			throw new ArticleVenduManagerException(e.getMessage());
 		}
 	}
 	

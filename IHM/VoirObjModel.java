@@ -4,7 +4,7 @@ public class VoirObjModel {
 
 	private int meilleure_offre_montant = -1;
 	private String meilleure_offre_pseudo = "";
-	private String message;
+	private String message = "";
 
 	public String getMeilleure_offre() {
 		return meilleure_offre_montant < 0 ? "Aucun offre"
@@ -22,7 +22,5 @@ public class VoirObjModel {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-	
 
 }

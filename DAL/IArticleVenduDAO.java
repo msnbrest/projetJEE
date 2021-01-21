@@ -11,10 +11,6 @@ public interface IArticleVenduDAO {
 
 	public ArticleVendu insert(ArticleVendu article);
 	
-	public void delete(ArticleVendu article) throws EnchereDALException;
-	
-	public void update(Enchere enchere) throws EnchereDALException;
-	
 	public ArticleVendu updateArticleVendu(ArticleVendu article) throws EnchereDALException;
 	
 	public List<ArticleVendu> getAll() throws EnchereDALException;
@@ -32,5 +28,9 @@ public interface IArticleVenduDAO {
 	public List<ArticleVendu> getAllByNoUtilisateurInSale(Integer noUtilisateur) throws EnchereDALException;
 	
 	public List<ArticleVendu> getAllByNoUtilisateurAfterSale(Integer noUtilisateur) throws EnchereDALException;
+	
+	public void update(Enchere enchere) throws EnchereDALException;
+	
+	public boolean delete(ArticleVendu article) throws EnchereDALException;
 	
 }
