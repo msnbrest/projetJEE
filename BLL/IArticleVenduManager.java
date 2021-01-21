@@ -14,9 +14,13 @@ public interface IArticleVenduManager {
 	
 	// recherche d'articles en fonction de son noCategorie et de son nom (Article)
 	public List<ArticleVendu> getArticleVendu(String nomArticle, Integer noCategorie) throws ArticleVenduManagerException;
+	
+	public List<ArticleVendu> getArticleVendu(String nomArticle) throws ArticleVenduManagerException;
+	
+	public List<ArticleVendu> getArticleVendu(Integer noCategorie) throws ArticleVenduManagerException;
 
 	// return article vendu
-	public ArticleVendu getArticleVendu(Integer noArticle) throws ArticleVenduManagerException;
+	public ArticleVendu getArticleVenduByNoArticle(Integer noArticle) throws ArticleVenduManagerException;
 	
 	//return noArticle
 	public Integer updateArticle(Integer noCategorie) throws ArticleVenduManagerException;

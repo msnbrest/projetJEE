@@ -33,13 +33,16 @@ public class CreerVenteModel {
 		this.article = article;
 	}
 
-	@Override
-	public String toString() {
-		return "CreerVenteModel [utilisateur=" + utilisateur + ", article=" + article + "]";
+	
+
+	
+	
+
+	private String message;
+	public String getMessage() {
+		return message;
 	}
-	
-
-	
-	
-
+	public void setMessage(String message) {
+		this.message = message;
+	}
 }

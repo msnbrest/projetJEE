@@ -35,17 +35,14 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 	private String SELECT_BY_NOM_ARTICLE = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
-			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() AND nom_article like ? ORDER by date_fin_encheres";
 	private String SELECT_BY_NO_CATEGORIE = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
-			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() AND a.no_categorie like ? ORDER by date_fin_encheres";
 	private String SELECT_BY_NOM_ARTICLE_NO_CATEGORIE = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
-			+ "INNER join ENCHERES e on e.no_article = a.no_article "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() AND a.no_categorie like ? AND nom_article like ? ORDER by date_fin_encheres";
 
 	// Réalise l'insertion del'article vendu puis celle du lieu de retrait en

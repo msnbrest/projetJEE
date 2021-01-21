@@ -6,6 +6,7 @@ public class ProfilUtilisateurModel {
 
 	private Utilisateur utilisateur;
 	private String message = "";
+	private boolean isme = false;
 
 	public ProfilUtilisateurModel() {
 	}
@@ -31,7 +32,12 @@ public class ProfilUtilisateurModel {
 		this.message += message1+"<br>";
 	}
 
+	public boolean isIsme() {
+		return isme;
+	}
 
-	
-	
+	public void setIsme(boolean isme) {
+		this.isme = isme;
+	}
+
 }
