@@ -36,26 +36,44 @@ public class IndexServlet extends HttpServlet {
 		IndexModel model = new IndexModel();
 
 		if (request.getParameter("rechercheNom") != null) {
-			// has formulaire ? go !
-			
-			if (!request.getParameter("noCategorie").equals("") && request.getParameter("rechercheNom").equals("")) {
-//que no et nom
-			} else if (!request.getParameter("noCategorie").equals("") && !request.getParameter("rechercheNom").equals("")) {
-				
+
+			if (!request.getParameter("rechercheNom").equals("") && !request.getParameter("noCategorie").equals("0")) {
 				try {
-					model.setLstArticleVendu(managerArticleVendu.getArticleVendu(request.getParameter("rechercheNom"),
+					model.setLstArticleVendu(managerArticleVendu.getArticlesVendu(request.getParameter("rechercheNom"),
 							Integer.parseInt(request.getParameter("noCategorie"))));
-				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
+				} catch (NumberFormatException | ArticleVenduManagerException e) {
+					model.setMessage("Erreur de chargement dun 'article");
+				}
+			} else if (!request.getParameter("rechercheNom").equals("")
+					&& request.getParameter("noCategorie").equals("0")) {
+				try {
+					model.setLstArticleVendu(managerArticleVendu.getArticlesVendu(request.getParameter("rechercheNom")));
+
 				} catch (ArticleVenduManagerException e) {
 					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
+			} else if (request.getParameter("rechercheNom").equals("")
+					&& !request.getParameter("noCategorie").equals("0")) {
+				try {
+					model.setLstArticleVendu(
+							managerArticleVendu.getArticlesVenduByNoCategorie(Integer.parseInt(request.getParameter("noCategorie"))));
+				} catch (ArticleVenduManagerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else if (request.getParameter("rechercheNom").equals("")
+					&& request.getParameter("noCategorie").equals("0")) {
+				try {
+					model.setLstArticleVendu(managerArticleVendu.getArticlesVendu());
+				} catch (ArticleVenduManagerException e) {
+					e.printStackTrace();
+				}
 			}
-			
 		} else {
 			try {
-				model.setLstArticleVendu(managerArticleVendu.getArticleVendu());
+				model.setLstArticleVendu(managerArticleVendu.getArticlesVendu());
 			} catch (ArticleVenduManagerException e) {
 
 			}

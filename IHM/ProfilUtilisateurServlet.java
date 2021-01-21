@@ -39,7 +39,15 @@ public class ProfilUtilisateurServlet extends HttpServlet {
 		String data = "";
 		Utilisateur utilisateur = new Utilisateur();
 
-		if (request.getSession().getAttribute("login") != null) {
+		if (request.getSession().getAttribute("login") == null) {
+
+			//dsl pas co
+			request.getSession().setAttribute("message", "Connectez-vous pour voir ce profil");
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+			request.getSession().setAttribute("message", "");
+			
+		} else {
+
 			if (request.getParameter("name") != null && !request.getParameter("name").equals("")) {
 				// if ((request.getSession().getAttribute("login") != null) &&
 				// (!(request.getSession().getAttribute("login").toString().equals("")))) {
@@ -65,11 +73,6 @@ public class ProfilUtilisateurServlet extends HttpServlet {
 			model.setUtilisateur(utilisateur);
 			request.setAttribute("model", model);
 			request.getRequestDispatcher("afficheProfil.jsp").forward(request, response);
-			
-		} else {
-
-			// dsl, pas co
-			request.getRequestDispatcher("/index").forward(request, response);
 
 		}
 
