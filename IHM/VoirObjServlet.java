@@ -9,13 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import fr.eni.eniEncheres.BLL.ArticleVenduManagerException;
 import fr.eni.eniEncheres.BLL.ArticleVenduManagerSing;
-import fr.eni.eniEncheres.BLL.CategorieSingleton;
-import fr.eni.eniEncheres.BLL.EnchereSingleton;
 import fr.eni.eniEncheres.BLL.IArticleVenduManager;
-import fr.eni.eniEncheres.BLL.ICategorieManager;
-import fr.eni.eniEncheres.BLL.IEnchereManager;
 import fr.eni.eniEncheres.BO.ArticleVendu;
-import fr.eni.eniEncheres.BO.Categorie;
 
 /**
  * Servlet implementation class name1Servlet
@@ -40,7 +35,7 @@ public class VoirObjServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		IArticleVenduManager managerArticleVendu = ArticleVenduManagerSing.getInstance();
-		IEnchereManager managerEnchere = EnchereSingleton.getInstance();
+		//IEnchereManager managerEnchere = EnchereSingleton.getInstance();
 		ArticleVendu article = new ArticleVendu();
 		VoirObjModel model = new VoirObjModel();
 
