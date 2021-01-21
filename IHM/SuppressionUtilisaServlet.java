@@ -39,7 +39,7 @@ public class SuppressionUtilisaServlet extends HttpServlet {
 			Integer idCurrent = (Integer) request.getSession().getAttribute("numUtilisateur");
 			try {
 				
-				managerBll.deleteUtilisateur(idCurrent);
+				managerBll.deleteUser(idCurrent);
 				modelSup.setMessage("Votre compte a été bien supprimé, à bientôt");
 				request.setAttribute("modelSup", modelSup);
 				

@@ -2,7 +2,6 @@ package fr.eni.eniEncheres.IHM;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
