@@ -47,26 +47,31 @@ public class ProfilUtilisateurServlet extends HttpServlet {
 				// TODO : nettoyer le code commenté? c'est caca
 				data = request.getParameter("name");
 
-				model.setMessage("Profil de " + data);
+				model.setProfilde("Profil de " + data);
 			} else {
 				data = request.getSession().getAttribute("login").toString();
-				model.setMessage("Mon profil");
+				model.setProfilde("Mon profil");
 				model.setIsme(true);
 			}
-		}
 
-		if (!data.equals("")) {
-			try {
-				utilisateur = managerBLL.getUserByIdentifiant(data);
-			} catch (UtilisateurBLLException e) {
-				e.printStackTrace();
-				// TODO : afficher erreur html
+			if (!data.equals("")) {
+				try {
+					utilisateur = managerBLL.getUserByIdentifiant(data);
+				} catch (UtilisateurBLLException e) {
+					// TODO : afficher erreur html
+				}
 			}
-		}
 
-		model.setUtilisateur(utilisateur);
-		request.setAttribute("model", model);
-		request.getRequestDispatcher("afficheProfil.jsp").forward(request, response);
+			model.setUtilisateur(utilisateur);
+			request.setAttribute("model", model);
+			request.getRequestDispatcher("afficheProfil.jsp").forward(request, response);
+			
+		} else {
+
+			// dsl, pas co
+			request.getRequestDispatcher("/index").forward(request, response);
+
+		}
 
 	}
 

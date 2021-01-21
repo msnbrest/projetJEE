@@ -4,16 +4,23 @@ import fr.eni.eniEncheres.BO.ArticleVendu;
 import fr.eni.eniEncheres.BO.Utilisateur;
 
 public class CreerVenteModel {
-	private Utilisateur utilisateur;
 	private ArticleVendu article;
-	
-	public CreerVenteModel() {
+	private Utilisateur utilisateur;
+	private String message = "";
 
+	public CreerVenteModel() {
 	}
 
-	public CreerVenteModel(Utilisateur utilisateur, ArticleVendu article) {
+	public CreerVenteModel(ArticleVendu article) {
 		super();
-		this.utilisateur = utilisateur;
+		this.article = article;
+	}
+
+	public ArticleVendu getArticle() {
+		return article;
+	}
+
+	public void setArticle(ArticleVendu article) {
 		this.article = article;
 	}
 
@@ -25,24 +32,13 @@ public class CreerVenteModel {
 		this.utilisateur = utilisateur;
 	}
 
-	public ArticleVendu getArticle() {
-		return article;
-	}
-
-	public void setArticle(ArticleVendu article) {
-		this.article = article;
-	}
-
-	
-
-	
-	
-
-	private String message;
 	public String getMessage() {
 		return message;
 	}
+
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+// envoyer adresse rue+codepostal+ville à jsp :D
 }

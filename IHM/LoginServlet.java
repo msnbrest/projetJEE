@@ -7,11 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.eni.eniEncheres.BLL.IUtilisateurManager;
-import fr.eni.eniEncheres.BLL.UtilisateurBLLException;
-import fr.eni.eniEncheres.BLL.UtilisateurSingleton;
-import fr.eni.eniEncheres.BO.Utilisateur;
-
 /**
  * Servlet implementation class LoginServlet
  */
@@ -33,24 +28,29 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		IUtilisateurManager managerBLL = UtilisateurSingleton.getInstance();
-		
-		if(request.getParameter("identifiant") != null){
-			// TODO : retenir l'id dans session attribute
-			request.getSession().setAttribute("login", request.getParameter("identifiant"));
+
+		if (request.getParameter("identifiant") != null) {
 			
-			Utilisateur utilisateur = new Utilisateur();
-			try {
-				utilisateur = managerBLL.getUserByIdentifiant(request.getParameter("identifiant"));
-			} catch (UtilisateurBLLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (request.getSession().getAttribute("login") == null) {
+
+				// TODO : retenir l'id dans session attribute
+				request.getSession().setAttribute("login", request.getParameter("identifiant"));
+				//request.getSession().setAttribute("id", requette sql u_u);
+				// TODO : ID !!!
+
+			} else {
+
+				// dsl, deja co
+				request.getRequestDispatcher("/index").forward(request, response);
+
 			}
-			request.getSession().setAttribute("numUtilisateur", utilisateur.getNoUtilisateur());
+
 			request.getRequestDispatcher("/index").forward(request, response);
-		}else {
+
+		} else {
+
 			request.getRequestDispatcher("login.jsp").forward(request, response);
-			
+
 		}
 		/*
 		 * TODO : TOUDOU recup infos, demander modele session, creer filtre verif mdp et

@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.Session;
-
 /**
  * Servlet implementation class LogoutServlet
  */
@@ -31,6 +29,7 @@ public class LogoutServlet extends HttpServlet {
 
 		request.getSession().invalidate();
 		request.getRequestDispatcher("/index").forward(request, response);
+		
 	}
 
 	/**

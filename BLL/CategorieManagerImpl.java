@@ -18,7 +18,7 @@ public class CategorieManagerImpl implements ICategorieManager {
 		try {
 			userDao.insertCategorie(categorie);
 		} catch (CategorieDALException e) {
-			throw new CategorieBLLException("probleme Bll exception lors de la creation");
+			throw new CategorieBLLException(e.getMessage());
 		}
 		return categorie;
 		
