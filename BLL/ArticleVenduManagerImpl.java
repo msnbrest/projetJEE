@@ -11,10 +11,22 @@ import fr.eni.eniEncheres.DAL.IArticleVenduDAO;
 
 public class ArticleVenduManagerImpl implements IArticleVenduManager {
 	private IArticleVenduDAO dao = DAOFact.getArticleVenduDAO();
-	
+
 	private List<ArticleVendu> listArticles = new ArrayList<ArticleVendu>();
-	
-	public List<ArticleVendu> getArticleVendu() throws ArticleVenduManagerException {
+
+	@Override
+	public ArticleVendu insertArticle(ArticleVendu article) throws ArticleVenduManagerException {
+		article.setPrixVente(article.getMiseAPrix());
+		ArticleVendu articleInsertion = article;
+		try {
+			articleInsertion = dao.insert(articleInsertion);
+		} catch (ArticleVenduDALException e) {
+		}
+		return articleInsertion;
+	}
+
+	@Override
+	public List<ArticleVendu> getArticlesVendu() throws ArticleVenduManagerException {
 		try {
 			listArticles = dao.getAll();
 		} catch (ArticleVenduDALException e) {
@@ -22,36 +34,50 @@ public class ArticleVenduManagerImpl implements IArticleVenduManager {
 		}
 		return listArticles;
 	}
-	
-	@Override
-	public ArticleVendu insertArticle(ArticleVendu article) throws ArticleVenduManagerException {
-		try {
-			return dao.insert(article);
-		} catch (ArticleVenduDALException e) {
-			throw new ArticleVenduManagerException(e.getMessage());
-		}
-	}
 
 	@Override
-	public List<ArticleVendu> getArticleVendu(String nomArticle, Integer noCategorie)
+	public List<ArticleVendu> getArticlesVendu(String nomArticle, Integer noCategorie)
 			throws ArticleVenduManagerException {
-		
+
 		try {
 			return dao.getAllByNomArticleAndNoCategorie(nomArticle, noCategorie);
 		} catch (ArticleVenduDALException e) {
 			throw new ArticleVenduManagerException(e.getMessage());
 		}
-		
+
 	}
-	
+
 	@Override
-	public ArticleVendu getArticleVendu(Integer noArticle) throws ArticleVenduManagerException {
+	public List<ArticleVendu> getArticlesVendu(String nomArticle) throws ArticleVenduManagerException {
+
+		try {
+			return dao.getAllByNomArticle(nomArticle);
+		} catch (ArticleVenduDALException e) {
+			throw new ArticleVenduManagerException("Erreur dans la récupération des articles aux niveau de la BLL");
+		}
+
+	}
+
+	@Override
+	public ArticleVendu getArticleVenduByNoArticle(Integer noArticle) throws ArticleVenduManagerException {
+
 		try {
 			return dao.getByID(noArticle);
-
 		} catch (ArticleVenduDALException e) {
-			throw new ArticleVenduManagerException(e.getMessage());
+			throw new ArticleVenduManagerException("Erreur dans la récupération des articles aux niveau de la BLL");
 		}
+
+	}
+
+	@Override
+	public List<ArticleVendu> getArticlesVenduByNoCategorie(Integer noCategorie) throws ArticleVenduManagerException {
+
+		try {
+			return dao.getAllByNoCategorie(noCategorie);
+		} catch (ArticleVenduDALException e) {
+			throw new ArticleVenduManagerException("Erreur dans la récupération des articles aux niveau de la BLL");
+		}
+
 	}
 
 	@Override
@@ -60,5 +86,4 @@ public class ArticleVenduManagerImpl implements IArticleVenduManager {
 		return null;
 	}
 
-	
 }
