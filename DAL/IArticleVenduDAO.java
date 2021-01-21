@@ -33,4 +33,6 @@ public interface IArticleVenduDAO {
 	
 	public boolean delete(ArticleVendu article) throws ArticleVenduDALException;
 	
+	public List<ArticleVendu> getAllByByNoUtilisateurAndTime(Integer noUtilisateur, String moment)throws ArticleVenduDALException;
+	
 }

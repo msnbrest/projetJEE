@@ -45,10 +45,23 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
 			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() AND a.no_categorie like ? AND nom_article like ? ORDER by date_fin_encheres";
-	String SELECT_BY_NO_ARTICLE = "select DISTINCT a.no_article, nom_article, description,  a.no_categorie, libelle, prix_vente, prix_initial, date_fin_encheres, r.rue, r.code_postal, r.ville, a.no_utilisateur, pseudo from ARTICLES_VENDUS as a "
+	private String SELECT_BY_NO_ARTICLE = "select DISTINCT a.no_article, nom_article, description,  a.no_categorie, libelle, prix_vente, prix_initial, date_fin_encheres, r.rue, r.code_postal, r.ville, a.no_utilisateur, pseudo from ARTICLES_VENDUS as a "
 			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
 			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
 			+ "INNER join RETRAITS r on r.no_article = a.no_article where a.no_article like ?";
+
+	private String SELECT_MES_VENTES_EN_COURS = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
+			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
+			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
+			+ "where date_debut_encheres <= getdate() AND date_fin_encheres >= GETDATE() AND a.no_utilisateur like ? ORDER by date_fin_encheres";
+	private String SELECT_MES_VENTES_NON_DEBUTES = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
+			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
+			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
+			+ "where date_debut_encheres > getdate() AND a.no_utilisateur like ? ORDER by date_debut_encheres";
+	private String SELECT_MES_VENTES_EN_TERMINES = "select DISTINCT a.no_article, nom_article, date_fin_encheres, a.no_categorie, a.no_utilisateur, pseudo, prix_vente from ARTICLES_VENDUS as a "
+			+ "INNER join CATEGORIES c on c.no_categorie = a.no_categorie "
+			+ "INNER join UTILISATEURS u on u.no_utilisateur = a.no_utilisateur "
+			+ "where date_fin_encheres < getdate() AND a.no_utilisateur like ? ORDER by date_fin_encheres";
 
 	// Réalise l'insertion del'article vendu puis celle du lieu de retrait en
 	// utilisant l'IRetraitDAO
@@ -301,7 +314,6 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 			stmt.setInt(1, noArticle);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-			
 
 				article.setNoArticle(rs.getInt("no_article"));
 				article.setNomArticle(rs.getString("nom_article"));
@@ -356,6 +368,54 @@ public class ArticleVenduImpl implements IArticleVenduDAO {
 	public List<ArticleVendu> getAllByNoUtilisateurAfterSale(Integer noUtilisateur) throws ArticleVenduDALException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<ArticleVendu> getAllByByNoUtilisateurAndTime(Integer noUtilisateur, String moment)
+			throws ArticleVenduDALException {
+		List<ArticleVendu> result = new ArrayList<ArticleVendu>();
+		String requeteSelect ;
+			
+		switch (moment) {
+		case "enCours":
+			requeteSelect = SELECT_MES_VENTES_EN_COURS;
+			break;
+		case "nonDebutees":
+			requeteSelect = SELECT_MES_VENTES_NON_DEBUTES;
+			break;
+		case "terminees":
+			requeteSelect = SELECT_MES_VENTES_EN_TERMINES;
+			break;
+		default:
+			throw new ArticleVenduDALException("Le type de date n'a pas été selectionné ");
+		}
+
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement stmt = cnx.prepareStatement(requeteSelect);
+			stmt.setInt(1, noUtilisateur);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				ArticleVendu article = new ArticleVendu();
+				article.setNoArticle(rs.getInt("no_article"));
+				article.setNomArticle(rs.getString("nom_article"));
+//				article.setDescription(rs.getString("description"));
+//				article.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());
+				article.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
+//				article.setMiseAPrix(rs.getInt("prix_initial"));
+				article.setPrixVente(rs.getInt("prix_vente"));
+				// TODO Enlever l'objet utilisateur/Categorie dans la bo ou rï¿½aliser une
+				// requete sql plus longue? Constructeur sup?
+				Utilisateur util = new Utilisateur();
+				util.setNoUtilisateur(rs.getInt("no_Utilisateur"));
+				util.setPseudo(rs.getString("pseudo"));
+				article.setUtilisateur(util);
+				article.setCategorie(new Categorie(rs.getInt("no_categorie"), ""));
+				result.add(article);
+			}
+		} catch (Exception e) {
+			throw new ArticleVenduDALException("Problème dans la selection des articles (" + e.getMessage() + ")");
+		}
+		return result;
 	}
 
 }
