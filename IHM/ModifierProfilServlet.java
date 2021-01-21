@@ -34,33 +34,70 @@ public class ModifierProfilServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		ProfilUtilsateurModel model = new ProfilUtilsateurModel();
+		ProfilUtilisateurModel model = new ProfilUtilisateurModel();
 		Utilisateur utilisateur = new Utilisateur();
-		model.setMessage("coool");
-		if (request.getParameter("Pseudo") == null) {
-			try {
-				utilisateur = managerBLL.getUserByIdentifiant(request.getSession().getAttribute("login").toString());
-			} catch (UtilisateurBLLException e) {
-				e.printStackTrace();
-				// TODO : afficher erreur html
-			}
+
+		if (request.getSession().getAttribute("login") == null) {
+
+			// dsl, pas co
+			request.getRequestDispatcher("/index").forward(request, response);
+
 		} else {
-			// modification utilisateur, puis update sql
-			utilisateur.setNoUtilisateur(Integer.parseInt(request.getSession().getAttribute("id").toString()));
-			utilisateur.setPseudo(request.getParameter("pseudo"));
-			utilisateur.setNom(request.getParameter("nom"));
-			utilisateur.setPrenom(request.getParameter("prenom"));
-			utilisateur.setEmail(request.getParameter("email"));
-			utilisateur.setTelephone(request.getParameter("telephone"));
-			utilisateur.setRue(request.getParameter("rue"));
-			utilisateur.setCodePostal(request.getParameter("codepostal"));
-			utilisateur.setVille(request.getParameter("ville"));
-			utilisateur.setMotDePasse((request.getParameter("motdepasse")));
-			utilisateur.setCredit(0);
-			utilisateur.setAdministrateur(Boolean.FALSE);
-			managerBLL.updateUtilisateur(utilisateur.getNoUtilisateur());
+
+			if (request.getParameter("pseudo") == null) {
+
+				// return infos à modif pour client
+				try {
+					utilisateur = managerBLL
+							.getUserByIdentifiant(request.getSession().getAttribute("login").toString());
+				} catch (UtilisateurBLLException e) {
+					// TODO : afficher erreur html
+				}
+
+			} else {
+
+				// maj ou suppr
+				if (request.getParameter("sender") == null || request.getParameter("sender").equals("Enregistrer")) {
+
+					// modification utilisateur, puis update sql
+					utilisateur.setNoUtilisateur(Integer.parseInt(request.getSession().getAttribute("id").toString()));
+					utilisateur.setPseudo(request.getParameter("pseudo"));
+					utilisateur.setNom(request.getParameter("nom"));
+					utilisateur.setPrenom(request.getParameter("prenom"));
+					utilisateur.setEmail(request.getParameter("email"));
+					utilisateur.setTelephone(request.getParameter("telephone"));
+					utilisateur.setRue(request.getParameter("rue"));
+					utilisateur.setCodePostal(request.getParameter("codepostal"));
+					utilisateur.setVille(request.getParameter("ville"));
+					utilisateur.setMotDePasse((request.getParameter("motdepasse")));
+					utilisateur.setCredit(100);
+					utilisateur.setAdministrateur(false);
+
+					// TODO : plus tard, if mdpActuel equals sql mdp
+					if (request.getParameter("mdpNouveau").equals(request.getParameter("mdpConfirmation"))) {
+						try {
+							managerBLL.updateUser(utilisateur);
+						} catch (UtilisateurBLLException e) {
+							model.setMessage(e.getMessage());
+						}
+					} else {
+						utilisateur.setMotDePasse("");
+						model.setMessage("Erreur, mots de passe différent");
+					}
+
+				} else if (request.getParameter("sender") != null
+						&& request.getParameter("sender").equals("Supprimer mon compte")) {
+
+					try {
+						managerBLL.deleteUser(utilisateur.getNoUtilisateur());
+					} catch (UtilisateurBLLException e) {
+						model.setMessage(e.getMessage());
+					}
+				}
+			}
+
 		}
-		
+
 		model.setUtilisateur(utilisateur);
 		request.getSession().setAttribute("model", model);
 		request.getRequestDispatcher("monProfil.jsp").forward(request, response);

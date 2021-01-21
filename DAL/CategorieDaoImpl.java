@@ -14,9 +14,9 @@ public class CategorieDAOImpl implements ICategorieDAO {
 	
 	private final String INSERT = "INSERT INTO CATEGORIES (libelle) VALUES (?) ";
 	private final String SELECT = "SELECT * FROM CATEGORIES";
-	private final String SELECT_BY_NO_CATEGORIE = "SELECT * FROM CATEGORIES WHERE NO_CATEGORIE = ?";
-	private final String UPDATE = "UPDATE CATEGORIES SET libelle=? WHERE NO_CATEGORIE = ?";
-	private final String DELETE = "DELETE FROM CATEGORIES WHERE NO_CATEGORIE = ?";
+	private final String SELECT_BY_NO_CATEGORIE = "SELECT * FROM CATEGORIES WHERE NO_CATEGORIE like ?";
+	private final String UPDATE = "UPDATE CATEGORIES SET libelle=? WHERE NO_CATEGORIE like ?";
+	private final String DELETE = "DELETE FROM CATEGORIES WHERE NO_CATEGORIE like ?";
 	
 	
 	@Override
@@ -33,7 +33,7 @@ public class CategorieDAOImpl implements ICategorieDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new CategorieDALException("problème dans l'insertion d'une Categorie");
+			throw new CategorieDALException("Problème d'insertion d'une catégorie ("+e.getMessage()+")");
 		}
 
 		return categorie;
@@ -56,7 +56,7 @@ public class CategorieDAOImpl implements ICategorieDAO {
 
 			}
 		} catch (SQLException e) {
-			throw new CategorieDALException("Problème de lecture des catégories");
+			throw new CategorieDALException("Problème de lecture des catégories ("+e.getMessage()+")");
 		}
 
 		return categories;
@@ -77,24 +77,10 @@ public class CategorieDAOImpl implements ICategorieDAO {
 				categorie.setLibelle(res.getString("libelle"));
 			}
 		} catch (SQLException e) {
-			throw new CategorieDALException("Problème de lecture d'une catégorie");
+			throw new CategorieDALException("Problème de lecture d'une catégorie ("+e.getMessage()+")");
 		}
 
 		return categorie;
-	}
-
-	@Override
-	public void deleteCategorie(Integer id) throws CategorieDALException {
-		
-		try {
-			Connection conx = ConnectionProvider.getConnection();
-			PreparedStatement req = conx.prepareStatement(DELETE);
-			req.setInt(1, id);
-			req.executeUpdate();
-		} catch (SQLException e) {
-			throw new CategorieDALException("Problème de suppression d'une catégorie");
-		}
-
 	}
 
 	@Override
@@ -107,10 +93,25 @@ public class CategorieDAOImpl implements ICategorieDAO {
 			req.setInt(2, categorie.getNoCategorie());
 			req.executeUpdate();
 		} catch (SQLException e) {
-			throw new CategorieDALException("Problème de mise à jour d'une catégorie");
+			throw new CategorieDALException("Problème de mise à jour d'une catégorie ("+e.getMessage()+")");
 		}
 
 		return categorie;
+	}
+
+	@Override
+	public boolean deleteCategorie(Integer id) throws CategorieDALException {
+		
+		try {
+			Connection conx = ConnectionProvider.getConnection();
+			PreparedStatement req = conx.prepareStatement(DELETE);
+			req.setInt(1, id);
+			req.executeUpdate();
+		} catch (SQLException e) {
+			throw new CategorieDALException("Problème de suppression d'une catégorie ("+e.getMessage()+")");
+		}
+
+		return true;
 	}
 
 }

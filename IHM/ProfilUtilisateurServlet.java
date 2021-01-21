@@ -39,29 +39,42 @@ public class ProfilUtilisateurServlet extends HttpServlet {
 		String data = "";
 		Utilisateur utilisateur = new Utilisateur();
 
-//		if (request.getParameter("name") != null && !request.getParameter("name").equals("")) {
-			if ((request.getSession().getAttribute("login") != null) && (!(request.getSession().getAttribute("login").toString().equals("")))) {
-				data = request.getSession().getAttribute("login").toString();
-//			data = request.getParameter("name");
-			
-//			model.setMessage("Profil de " + data);
-//		} else if (request.getSession().getAttribute("login") != null) {
-//			data = request.getSession().getAttribute("login").toString();
-//			model.setMessage("Votre profil " + data);
-//		}
-//
-//		if (!data.equals("")) {
-			try {
-				utilisateur = managerBLL.getUserByIdentifiant(data);
-			} catch (UtilisateurBLLException e) {
-				e.printStackTrace();
-				// TODO : afficher erreur html
-			}
-		}
+		if (request.getSession().getAttribute("login") == null) {
 
-		model.setUtilisateur(utilisateur);
-		request.setAttribute("model", model);
-		request.getRequestDispatcher("afficheProfil.jsp").forward(request, response);
+			//dsl pas co
+			request.getSession().setAttribute("message", "Connectez-vous pour voir ce profil");
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+			request.getSession().setAttribute("message", "");
+			
+		} else {
+
+			if (request.getParameter("name") != null && !request.getParameter("name").equals("")) {
+				// if ((request.getSession().getAttribute("login") != null) &&
+				// (!(request.getSession().getAttribute("login").toString().equals("")))) {
+				// data = request.getSession().getAttribute("login").toString();
+				// TODO : nettoyer le code commenté? c'est caca
+				data = request.getParameter("name");
+
+				model.setProfilde("Profil de " + data);
+			} else {
+				data = request.getSession().getAttribute("login").toString();
+				model.setProfilde("Mon profil");
+				model.setIsme(true);
+			}
+
+			if (!data.equals("")) {
+				try {
+					utilisateur = managerBLL.getUserByIdentifiant(data);
+				} catch (UtilisateurBLLException e) {
+					// TODO : afficher erreur html
+				}
+			}
+
+			model.setUtilisateur(utilisateur);
+			request.setAttribute("model", model);
+			request.getRequestDispatcher("afficheProfil.jsp").forward(request, response);
+
+		}
 
 	}
 

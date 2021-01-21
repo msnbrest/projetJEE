@@ -8,7 +8,7 @@ public interface IRetraitDAO {
 
 	public Retrait getRetraitByArticleID(int noArticle) throws RetraitDALException;
 
-	public void deleteRetrait(Integer noArticle) throws RetraitDALException;
-
 	public Retrait updateRetrait(Retrait retrait) throws RetraitDALException;
+
+	public boolean deleteRetrait(Integer noArticle) throws RetraitDALException;
 }

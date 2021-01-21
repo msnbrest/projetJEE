@@ -6,7 +6,8 @@ import fr.eni.eniEncheres.BO.Utilisateur;
 public class CreerVenteModel {
 	private Utilisateur utilisateur;
 	private ArticleVendu article;
-	
+	private String message = "";
+
 	public CreerVenteModel() {
 
 	}
@@ -33,16 +34,14 @@ public class CreerVenteModel {
 		this.article = article;
 	}
 
-	
-
-	
-	
-
-	private String message;
 	public String getMessage() {
 		return message;
 	}
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+	
+	
+// envoyer adresse rue+codepostal+ville à jsp :D
 }

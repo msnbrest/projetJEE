@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import fr.eni.eniEncheres.BLL.IUtilisateurManager;
 import fr.eni.eniEncheres.BLL.UtilisateurBLLException;
 import fr.eni.eniEncheres.BLL.UtilisateurSingleton;
+import fr.eni.eniEncheres.BO.Utilisateur;
 
 /**
  * Servlet implementation class LoginServlet
@@ -36,34 +37,26 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		IUtilisateurManager managerBLL = UtilisateurSingleton.getInstance();
 		
-		String identifiant = request.getParameter("identifiant");
-		String mdp = request.getParameter("mdp");
-	
-
-		try {
+		if(request.getParameter("identifiant") != null && !request.getParameter("identifiant").toString().equals("")){
+			// TODO : retenir l'id dans session attribute
 			
-			if ((managerBLL.sauthentifier(identifiant, mdp))) {
-				
+			System.out.println(request.getParameter("identifiant"));
+			
+			try {
+				Utilisateur utilisateur = new Utilisateur();
+				utilisateur = managerBLL.getUserByIdentifiant(request.getParameter("identifiant"));
 				request.getSession().setAttribute("login", request.getParameter("identifiant"));
-				
-				request.getSession().setAttribute("numUtilisateur",
-						managerBLL.getUserByIdentifiant(identifiant).getNoUtilisateur());
-				
-				request.getRequestDispatcher("/Encheres").forward(request, response);
-				
+				request.getSession().setAttribute("id", utilisateur.getNoUtilisateur());
+				request.getRequestDispatcher("/index").forward(request, response);
+			} catch (UtilisateurBLLException e) {
+				request.getSession().setAttribute("message", "Problème de connexion : "+e.getMessage());
+				request.getRequestDispatcher("login.jsp").forward(request, response);
+				request.getSession().setAttribute("message", "");
 			}
-
-			if (!(managerBLL.sauthentifier(identifiant, mdp))) {
-				
-				modelLogin.setMessage("Veuillez vous identifier");
-				request.setAttribute("modelLogin", modelLogin);
-			}
+		}else {
 			request.getRequestDispatcher("login.jsp").forward(request, response);
-
-		} catch (UtilisateurBLLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

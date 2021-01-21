@@ -2,6 +2,7 @@ package fr.eni.eniEncheres.IHM;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,68 +42,140 @@ public class CreerVenteServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		IArticleVenduManager managerArticleVendu = ArticleVenduManagerSing.getInstance();
-		CreerVenteModel model = new CreerVenteModel();
 
-		if (request.getParameter("form_nom_article") != null) {
-			ArticleVendu article = new ArticleVendu();
+		if (request.getSession().getAttribute("login") == null) {
 
-			article.setNomArticle(request.getParameter("form_nom_article"));
-			article.setDescription(request.getParameter("form_description_article"));
-
-			Categorie categorieArticle = new Categorie();
-			categorieArticle.setNoCategorie(Integer.parseInt(request.getParameter("form_no_categorie_article")));
-
-			article.setCategorieArticleVendu(categorieArticle);
-			article.setMiseAPrix(Integer.parseInt(request.getParameter("form_montant_enchere")));
-			article.setDateDebutEncheres(LocalDate.parse(request.getParameter("form_date_debut_article")));
-			article.setDateFinEncheres(LocalDate.parse(request.getParameter("form_date_fin_article")));
-
-			Retrait lieuRetrait = new Retrait();
-			lieuRetrait.setRue(request.getParameter("form_rue_retrait"));
-			lieuRetrait.setCodePostal(request.getParameter("form_code_postal_retrait"));
-			lieuRetrait.setVille(request.getParameter("form_ville_retrait"));
-
-			article.setLieuRetrait(lieuRetrait);
-
-			Utilisateur utilisateur = new Utilisateur();
-			utilisateur.setNoUtilisateur(Integer.parseInt(request.getSession().getAttribute("numUtilisateur").toString()));
-
-			article.setUtilisateur(utilisateur);
-
-			try {
-				managerArticleVendu.insertArticle(article);
-			} catch (ArticleVenduManagerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			// dsl, pas co
 			request.getRequestDispatcher("/index").forward(request, response);
-			
+
 		} else {
-			// Récupere l'adresse par défaut de l'utilisateur pour la transmettre à la jsp
+
+			// init
+			CreerVenteModel model = new CreerVenteModel();
 			IUtilisateurManager managerUtilisateur = UtilisateurSingleton.getInstance();
-			Utilisateur utilisateur = new Utilisateur();
-			if (request.getSession().getAttribute("login") != null) {
+			IArticleVenduManager managerArticleVendu = ArticleVenduManagerSing.getInstance();
+			Boolean ok_govente = true;
+			ArticleVendu article = new ArticleVendu();
+			article.setCategorie(new Categorie());
+			article.setLieuRetrait(new Retrait());
+			article.setUtilisateur(new Utilisateur());
+
+			if (request.getParameter("sender") == null) {
+
+				// Afficher adresse postale par défaut
 				try {
-					utilisateur = managerUtilisateur
-							.getUserByIdentifiant(request.getSession().getAttribute("login").toString());
-					// TODO: pas très top de donner toutes les infos sur l'utilisaeteur
-					model.setUtilisateur(utilisateur);
+					article.setUtilisateur(managerUtilisateur
+							.getUserByIdentifiant(request.getSession().getAttribute("login").toString()));
+
+					article.getLieuRetrait().setRue(article.getUtilisateur().getRue());
+					article.getLieuRetrait().setCodePostal(article.getUtilisateur().getCodePostal());
+					article.getLieuRetrait().setVille(article.getUtilisateur().getVille());
+
+					// info: toutes les infos?
 				} catch (UtilisateurBLLException e) {
-					// TODO Créer une classe exception pour gérer les messages
-					e.printStackTrace();
+					model.setMessage(e.getMessage());
 				}
+
+			} else if (request.getParameter("sender").equals("Enregistrer")) {
+				// save to article
+
+				article.setNomArticle(request.getParameter("form_nom_article"));
+				article.setDescription(request.getParameter("form_description_article"));
+				article.setMiseAPrix(0 + (request.getParameter("form_montant_enchere").equals("") ? 0
+						: Integer.parseInt(request.getParameter("form_montant_enchere"))));
+				article.setDateDebutEncheres(
+						request.getParameter("form_date_debut_article").equals("") ? LocalDate.now()
+								: LocalDate.parse(request.getParameter("form_date_debut_article")));
+				article.setDateFinEncheres(request.getParameter("form_date_fin_article").equals("") ? LocalDate.now()
+						: LocalDate.parse(request.getParameter("form_date_fin_article")));
+
+				article.getCategorie().setNoCategorie(request.getParameter("form_no_categorie_article").equals("") ? 0
+						: Integer.parseInt(request.getParameter("form_no_categorie_article")));
+
+				// TODO : SI formulaire contient adresse autre que adresse client, alors ajouter
+				// un retrait, sinon osef car adresse déjà client : dans le métier
+
+				try {
+					article.setUtilisateur(managerUtilisateur
+							.getUserByIdentifiant(request.getSession().getAttribute("login").toString()));
+					// info: toutes les infos?
+
+					// soit infos via formulaire ou par défaut
+					article.getLieuRetrait()
+							.setRue(request.getParameter("form_rue_retrait").equals("")
+									? article.getUtilisateur().getRue()
+									: request.getParameter("form_rue_retrait"));
+					article.getLieuRetrait()
+							.setCodePostal(request.getParameter("form_code_postal_retrait").equals("")
+									? article.getUtilisateur().getCodePostal()
+									: request.getParameter("form_code_postal_retrait"));
+					article.getLieuRetrait()
+							.setVille(request.getParameter("form_ville_retrait").equals("")
+									? article.getUtilisateur().getVille()
+									: request.getParameter("form_ville_retrait"));
+
+					if (article.getNomArticle().equals("")) {
+						model.setMessage("Titre manquant");
+					} else if (article.getDescription().equals("")) {
+						model.setMessage("Déscription manquante");
+					} else if (article.getCategorie().getNoCategorie() < 1) {
+						model.setMessage("Catégorie manquante");
+					} else if (article.getDateDebutEncheres().isBefore(LocalDate.now())) {
+						model.setMessage("Erreur Date de fin trop proche");
+					} else if (!article.getDateFinEncheres().isAfter(article.getDateDebutEncheres())) {
+						model.setMessage("Erreur Date de début proche de Date de fin");
+					} else if (article.getMiseAPrix() < 0) {
+						model.setMessage("Mise à prix manquante");
+					} else if (article.getLieuRetrait().getRue().equals("")) {
+						model.setMessage("Rue de retrait manquante");
+					} else if (article.getLieuRetrait().getCodePostal().equals("")) {
+						model.setMessage("Code postal de retrait manquant");
+					} else if (article.getLieuRetrait().getVille().equals("")) {
+						model.setMessage("Ville de retrait manquante");
+					} else {
+
+						try {
+							article.getUtilisateur().setNoUtilisateur(
+									Integer.parseInt(request.getSession().getAttribute("id").toString()));
+
+							managerArticleVendu.insertArticle(article);
+						} catch (ArticleVenduManagerException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+						ok_govente = false;
+						request.getRequestDispatcher("/index").forward(request, response);
+
+					}
+				} catch (UtilisateurBLLException e) {
+					model.setMessage(e.getMessage());
+				}
+
+			} else if (request.getParameter("sender").equals("Annuler")) {
+
+				ok_govente = false;
+				request.getRequestDispatcher("/index").forward(request, response);
+
+			} else if (request.getParameter("sender").equals("Annuler la vente")) {
+				// delete article
+				// TODO : creer_vente.jsp coder model.article.no pour annuler la vente.
+
 			}
-			request.setAttribute("model", model);
-			request.getRequestDispatcher("creer_vente.jsp").forward(request, response);
+
+			if (ok_govente) {
+				// si formulaire contient adresse autre que adresse client, alors ajouter un
+				// retrait, sinon osef car adresse déjà client
+
+				// xxxx
+
+				model.setArticle(article);
+				request.setAttribute("model", model);
+				request.getRequestDispatcher("creer_vente.jsp").forward(request, response);
+				// TODO : creer_vente.jsp coder model.article.no pour annuler la vente.
+			}
+
 		}
-
-		// si formulaire contient adresse autre que adresse client, alors ajouter un
-		// retrait, sinon osef car adresse déjà client : dans le métier
-
-		// request.getRequestDispatcher("creer_vente.jsp").forward(request, response);
-		// TODO : creer_vente.jsp coder model.article.no pour annuler la vente.
 
 	}
 

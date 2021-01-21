@@ -1,6 +1,9 @@
 package fr.eni.eniEncheres.BO;
 
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class ArticleVendu {
 
@@ -12,9 +15,11 @@ public class ArticleVendu {
 	private Integer miseAPrix;
 	private Integer prixVente;
 	private Boolean etatVente;
-	private Categorie categorieArticleVendu;
+	private Categorie categorie;
 	private Utilisateur utilisateur;
-	private Boolean articleAccessible;//TODO accessible 
+	private Retrait lieuRetrait;
+	private List<Enchere> concerne;
+//	private Boolean articleAccessible;//TODO accessible 
 	
 	public ArticleVendu() {
 		
@@ -22,7 +27,7 @@ public class ArticleVendu {
 	
 	public ArticleVendu(String nomArticle, String description, LocalDate dateDebutEncheres,
 			LocalDate dateFinEncheres, Integer miseAPrix, Integer prixVente, Boolean etatVente,
-			Categorie categorieArticleVendu, Utilisateur utilisateur, Boolean articleAccessible) {
+			Categorie categorie1, Utilisateur utilisateur/*, Boolean articleAccessible*/) {
 		super();
 		this.nomArticle = nomArticle;
 		this.description = description;
@@ -31,9 +36,9 @@ public class ArticleVendu {
 		this.miseAPrix = miseAPrix;
 		this.prixVente = prixVente;
 		this.etatVente = etatVente;
-		this.categorieArticleVendu = categorieArticleVendu;
+		this.categorie = categorie1;
 		this.utilisateur = utilisateur;
-		this.articleAccessible = articleAccessible;
+//		this.articleAccessible = articleAccessible;
 	}
 
 
@@ -102,12 +107,12 @@ public class ArticleVendu {
 		this.etatVente = etatVente;
 	}
 
-	public Categorie getCategorieArticleVendu() {
-		return categorieArticleVendu;
+	public Categorie getCategorie() {
+		return categorie;
 	}
 
-	public void setCategorieArticleVendu(Categorie categorieArticleVendu) {
-		this.categorieArticleVendu = categorieArticleVendu;
+	public void setCategorie(Categorie categorie1) {
+		this.categorie = categorie1;
 	}
 
 	public Utilisateur getUtilisateur() {
@@ -117,31 +122,39 @@ public class ArticleVendu {
 	public void setUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
-	
-	
 
-	public Boolean getArticleAccessible() {
-		return articleAccessible;
+	public Retrait getLieuRetrait() {
+		return lieuRetrait;
 	}
 
-	public void setArticleAccessible(Boolean articleAccessible) {
-		this.articleAccessible = articleAccessible;
+	public void setLieuRetrait(Retrait lieuRetrait) {
+		this.lieuRetrait = lieuRetrait;
 	}
 
-	public ArticleVendu(Integer noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, Integer miseAPrix, Integer prixVente, Boolean etatVente,
-			Categorie categorieArticleVendu, Utilisateur utilisateur, Boolean articleAccessible) {
-		super();
-		this.noArticle = noArticle;
-		this.nomArticle = nomArticle;
-		this.description = description;
-		this.dateDebutEncheres = dateDebutEncheres;
-		this.dateFinEncheres = dateFinEncheres;
-		this.miseAPrix = miseAPrix;
-		this.prixVente = prixVente;
-		this.etatVente = etatVente;
-		this.categorieArticleVendu = categorieArticleVendu;
-		this.utilisateur = utilisateur;
-		this.articleAccessible = articleAccessible;
+	public List<Enchere> getConcerne() {
+		return concerne;
+	}
+
+	public void setConcerne(List<Enchere> concerne) {
+		this.concerne = concerne;
+	}
+
+//	public Boolean getArticleAccessible() {
+//		return articleAccessible;
+//	}
+//
+//	public void setArticleAccessible(Boolean articleAccessible) {
+//		this.articleAccessible = articleAccessible;
+//	}
+
+	@Override
+	public String toString() {
+		return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
+				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", miseAPrix="
+				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", categorie="
+				+ categorie + ", utilisateur=" + utilisateur + ", lieuRetrait=" + lieuRetrait
+				+ ", concerne=" + concerne 
+//				+ ", articleAccessible=" + articleAccessible 
+				+ "]";
 	}
 }

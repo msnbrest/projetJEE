@@ -1,34 +1,22 @@
 package fr.eni.eniEncheres.IHM;
 
 import fr.eni.eniEncheres.BO.ArticleVendu;
+import fr.eni.eniEncheres.BO.Enchere;
 
 public class VoirObjModel {
 
-	private int meilleure_offre_montant = -1;
-	private String meilleure_offre_pseudo = "";
-	private String message;
-	private ArticleVendu articleVendu;
-	
+	private String message = "";
+	private ArticleVendu article;
+	private Enchere enchere;
+
 	public VoirObjModel() {
-		
+
 	}
-	
-	public VoirObjModel(int meilleure_offre_montant, String meilleure_offre_pseudo, String message,
-			ArticleVendu articleVendu) {
+
+	public VoirObjModel(String message, ArticleVendu article) {
 		super();
-		this.meilleure_offre_montant = meilleure_offre_montant;
-		this.meilleure_offre_pseudo = meilleure_offre_pseudo;
 		this.message = message;
-		this.articleVendu = articleVendu;
-	}
-
-	public String getMeilleure_offre() {
-		return meilleure_offre_montant < 0 ? "Aucun offre"
-				: meilleure_offre_montant + " pts par " + meilleure_offre_pseudo;
-	}
-
-	public int getOffre_minimale() {
-		return meilleure_offre_montant < 0 ? 1 : meilleure_offre_montant + 1;
+		this.article = article;
 	}
 
 	public String getMessage() {
@@ -39,14 +27,20 @@ public class VoirObjModel {
 		this.message = message;
 	}
 
-	public ArticleVendu getArticleVendu() {
-		return articleVendu;
+	public ArticleVendu getArticle() {
+		return article;
 	}
 
-	public void setArticleVendu(ArticleVendu articleVendu) {
-		this.articleVendu = articleVendu;
+	public void setArticle(ArticleVendu article1) {
+		this.article = article1;
 	}
-	
-	
+
+	public Enchere getEnchere() {
+		return enchere;
+	}
+
+	public void setEnchere(Enchere enchere) {
+		this.enchere = enchere;
+	}
 
 }

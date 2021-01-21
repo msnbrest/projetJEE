@@ -1,3 +1,4 @@
+
 package fr.eni.eniEncheres.DAL;
 
 import java.sql.Connection;
@@ -9,10 +10,10 @@ import java.sql.Statement;
 import fr.eni.eniEncheres.BO.Retrait;
 
 public class RetraitDAOImpl implements IRetraitDAO {
-	private final String SELECT_BY_NO_ARTICLE = "SELECT * FROM RETRAITS WHERE NO_ARTICLE = ?";
+	private final String SELECT_BY_NO_ARTICLE = "SELECT * FROM RETRAITS WHERE NO_ARTICLE like ?";
 	private final String INSERT = "INSERT INTO RETRAITS VALUES (?,?,?,?)";
-	private final String UPDATE = "UPDATE RETRAITS SET rue=?, code_postal=?, ville=? WHERE no_article = ?";
-	private final String DELETE = "DELETE FROM RETRAITS WHERE no_article = ?";
+	private final String UPDATE = "UPDATE RETRAITS SET rue=?, code_postal=?, ville=? WHERE no_article like ?";
+	private final String DELETE = "DELETE FROM RETRAITS WHERE no_article like ?";
 
 	@Override
 	public Retrait insertRetrait(Retrait retrait) throws RetraitDALException {
@@ -25,7 +26,7 @@ public class RetraitDAOImpl implements IRetraitDAO {
 			req.setString(4, retrait.getVille());
 			req.executeUpdate();
 		} catch (SQLException e) {
-			throw new RetraitDALException("Problème d'insertion d'un retrait");
+			throw new RetraitDALException("Problème d'insertion d'un retrait ("+e.getMessage()+")");
 		}
 
 		return retrait;
@@ -48,23 +49,10 @@ public class RetraitDAOImpl implements IRetraitDAO {
 				retrait.setVille(res.getString("ville"));
 			}
 		} catch (SQLException e) {
-			throw new RetraitDALException("Problème de lecture d'un retrait");
+			throw new RetraitDALException("Problème de lecture d'un retrait ("+e.getMessage()+")");
 		}
 
 		return retrait;
-	}
-
-	@Override
-	public void deleteRetrait(Integer noArticle) throws RetraitDALException {
-		try {
-			Connection conx = ConnectionProvider.getConnection();
-			PreparedStatement req = conx.prepareStatement(DELETE);
-			req.setInt(1, noArticle);
-			req.executeUpdate();
-		} catch (SQLException e) {
-			throw new RetraitDALException("Problème de suppression d'un retrait");
-		}
-
 	}
 
 	@Override
@@ -79,10 +67,26 @@ public class RetraitDAOImpl implements IRetraitDAO {
 			req.setString(4, retrait.getVille());
 			req.executeUpdate();
 		} catch (SQLException e) {
-			throw new RetraitDALException("Problème de mise à jour d'un retrait");
+			throw new RetraitDALException("Problème de mise à jour d'un retrait ("+e.getMessage()+")");
 		}
 
 		return retrait;
+	}
+
+	@Override
+	public boolean deleteRetrait(Integer noArticle) throws RetraitDALException {//TODO: mettre Integer noArticle
+
+		try {
+			Connection conx = ConnectionProvider.getConnection();
+			PreparedStatement req = conx.prepareStatement(DELETE);
+			req.setInt(1, noArticle);
+			req.executeUpdate();
+		} catch (SQLException e) {
+			throw new RetraitDALException("Problème de suppression d'un retrait ("+e.getMessage()+")");
+		}
+		
+		return true;
+
 	}
 
 }

@@ -7,8 +7,8 @@ import fr.eni.eniEncheres.BO.ArticleVendu;
 
 public class IndexModel {
 	private List<ArticleVendu> lstArticleVendu = new ArrayList<ArticleVendu>();
-private String message;
-	
+	private String message = "";
+
 	public IndexModel() {
 
 	}

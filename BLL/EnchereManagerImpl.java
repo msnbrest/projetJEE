@@ -15,18 +15,30 @@ public class EnchereManagerImpl implements IEnchereManager {
 		try {
 			userDao.insertEnchere(enchere);
 		} catch (EnchereDALException e) {
-			throw new EnchereBLLException("probleme Bll exception lors de la creation");
+			throw new EnchereBLLException(e.getMessage());
 		}
 		return enchere;
 
 	}
 
 	@Override
-	public Enchere getEnchereByArticleId(int id) throws EnchereBLLException {
+	public Enchere getEnchereByArticleId(int noArticle) throws EnchereBLLException {
 
 		Enchere enchere = new Enchere();
 		try {
-			enchere = userDao.getEnchereByArticleId(id);
+			enchere = userDao.getEnchereByArticleId(noArticle);
+		} catch (EnchereDALException e) {
+			throw new EnchereBLLException(e.getMessage());
+		}
+		return enchere;
+	}
+
+	@Override
+	public Enchere getEnchereByUtilisateurIdInSale(int noArticle) throws EnchereBLLException {
+
+		Enchere enchere = new Enchere();
+		try {
+			enchere = userDao.getEnchereByUtilisateurIdInSale(noArticle);//TODO : by in sale
 		} catch (EnchereDALException e) {
 			throw new EnchereBLLException(e.getMessage());
 		}
@@ -35,11 +47,11 @@ public class EnchereManagerImpl implements IEnchereManager {
 	}
 
 	@Override
-	public Enchere getEnchereByUtilisateurId(int id) throws EnchereBLLException {
+	public Enchere getEnchereByUtilisateurIdAfterSale(int noArticle) throws EnchereBLLException {
 
 		Enchere enchere = new Enchere();
 		try {
-			enchere = userDao.getEnchereByUtilisateurId(id);
+			enchere = userDao.getEnchereByUtilisateurIdAfterSale(noArticle);//TODO : by after sale
 		} catch (EnchereDALException e) {
 			throw new EnchereBLLException(e.getMessage());
 		}

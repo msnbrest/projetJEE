@@ -6,6 +6,10 @@ public class DAOFact {
 		return new ArticleVenduImpl();
 	}
 
+	public static IUtilisateurDAO getUserDAO() {
+		return new UtilisateurDAOImpl();
+	}
+
 	public static IEnchereDAO getEnchereDAO() {
 		return new EnchereDAOImpl();
 	}

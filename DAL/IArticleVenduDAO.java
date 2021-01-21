@@ -11,26 +11,28 @@ public interface IArticleVenduDAO {
 
 	public ArticleVendu insert(ArticleVendu article) throws ArticleVenduDALException;
 	
-	public void delete(ArticleVendu article) throws EnchereDALException;
+	public ArticleVendu updateArticleVendu(ArticleVendu article) throws ArticleVenduDALException;
 	
-	public void update(Enchere enchere) throws EnchereDALException;
+	public List<ArticleVendu> getAll() throws ArticleVenduDALException;
 	
-	public ArticleVendu updateArticleVendu(ArticleVendu article) throws EnchereDALException;
+	public List<ArticleVendu> getAllByNomArticle(String nomArticle) throws ArticleVenduDALException;
 	
-	public List<ArticleVendu> getAll() throws EnchereDALException;
+	public List<ArticleVendu> getAllByNomArticleAndNoCategorie(String nomArticle, Integer noCategorie) throws ArticleVenduDALException;
 	
-	public List<ArticleVendu> getAllByNomArticle(String nomArticle) throws EnchereDALException;
+	public List<ArticleVendu> getAllByNoCategorie(Integer noCategorie) throws ArticleVenduDALException;
 	
-	public List<ArticleVendu> getAllByNomArticleAndNoCategorie(String nomArticle, Integer noCategorie) throws EnchereDALException;
+	public ArticleVendu getByID(Integer noArticle) throws ArticleVenduDALException;
 	
-	public List<ArticleVendu> getAllByNoCategorie(Integer noCategorie) throws EnchereDALException;
+	public List<ArticleVendu> getAllByNoUtilisateurBeforeSale(Integer noUtilisateur) throws ArticleVenduDALException;
 	
-	public ArticleVendu getByID(Integer noArticle) throws EnchereDALException;
+	public List<ArticleVendu> getAllByNoUtilisateurInSale(Integer noUtilisateur) throws ArticleVenduDALException;
 	
-	public List<ArticleVendu> getAllByNoUtilisateurBeforeSale(Integer noUtilisateur) throws EnchereDALException;
+	public List<ArticleVendu> getAllByNoUtilisateurAfterSale(Integer noUtilisateur) throws ArticleVenduDALException;
 	
-	public List<ArticleVendu> getAllByNoUtilisateurInSale(Integer noUtilisateur) throws EnchereDALException;
+	public void update(Enchere enchere) throws ArticleVenduDALException;
 	
-	public List<ArticleVendu> getAllByNoUtilisateurAfterSale(Integer noUtilisateur) throws EnchereDALException;
+	public boolean delete(ArticleVendu article) throws ArticleVenduDALException;
+	
+	public List<ArticleVendu> getAllByByNoUtilisateurAndTime(Integer noUtilisateur, String moment)throws ArticleVenduDALException;
 	
 }
