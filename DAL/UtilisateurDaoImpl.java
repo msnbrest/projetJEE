@@ -230,4 +230,47 @@ public class UtilisateurDAOImpl implements IUtilisateurDAO {
 
 	}
 
+	@Override
+	public  Boolean  sauthentifier(String identifiant, String mdp) throws UtilisateurDAOException {
+		boolean status = false; 
+//		Utilisateur user = new Utilisateur();
+
+		try {
+			Connection cnx = ConnectionProvider.getConnection();
+			PreparedStatement req = cnx
+					.prepareStatement("SELECT * FROM UTILISATEURS WHERE (pseudo=? AND mot_de_passe= ?) OR (email = ? AND mot_de_passe= ?) ");
+			req.setString(1, identifiant);
+			req.setString(2, mdp);
+			req.setString(3, identifiant);
+			req.setString(4, mdp);
+			ResultSet res = req.executeQuery();
+			
+			status = res.next();
+
+//			if (res.next()) {
+//				user.setNoUtilisateur(res.getInt("no_utilisateur"));
+//				user.setPseudo(res.getString("pseudo"));
+//				user.setNom(res.getString("nom"));
+//				user.setPrenom(res.getString("prenom"));
+//				user.setEmail(res.getString("email"));
+//				user.setTelephone(res.getString("telephone"));
+//				user.setRue(res.getString("rue"));
+//				user.setCodePostal(res.getString("code_postal"));
+//				user.setVille(res.getString("ville"));
+//				user.setMotDePasse(res.getString("mot_de_passe"));
+//				user.setCredit(res.getInt("credit"));
+//				user.setAdministrateur(res.getBoolean("administrateur"));
+//			}
+//			else
+//			{
+//				System.out.println("erreur Login");
+//			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new UtilisateurDAOException("probleme lors de l appel de l utisateur");
+		}
+		return status;
+	}
+
 }

@@ -86,4 +86,18 @@ public class UtilisateurManagerImpl implements IUtilisateurManager {
 
 	}
 
+	@Override
+	public Boolean sauthentifier(String identifiant, String mdp) throws UtilisateurBLLException {
+		boolean status =false;
+
+		try {
+			status = userDao.sauthentifier(identifiant, mdp);
+	
+		} catch (UtilisateurDAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new UtilisateurBLLException(e.getMessage());
+		}
+		return status;
+	}
 }

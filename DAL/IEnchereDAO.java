@@ -1,5 +1,6 @@
 package fr.eni.eniEncheres.DAL;
 
+import fr.eni.eniEncheres.BO.ArticleVendu;
 import fr.eni.eniEncheres.BO.Enchere;
 
 public interface IEnchereDAO {

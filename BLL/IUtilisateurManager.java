@@ -13,9 +13,9 @@ public interface IUtilisateurManager {
 	public List<Utilisateur> getUsersByName(String name) throws UtilisateurBLLException;
 
 	public Utilisateur getUserByIdentifiant(String identifiant) throws UtilisateurBLLException;
-
-	public boolean deleteUser(Integer id) throws UtilisateurBLLException;
-
+	public void deleteUtilisateur(Integer id) throws UtilisateurBLLException;
+	public Boolean sauthentifier(String identifiant, String mdp) throws UtilisateurBLLException;
+	
+	
 	public Utilisateur updateUser(Utilisateur utilisateur) throws UtilisateurBLLException;
-
 }
