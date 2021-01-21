@@ -25,4 +25,6 @@ public interface IArticleVenduManager {
 
 	// return noArticle
 	public Integer updateArticle(Integer noCategorie) throws ArticleVenduManagerException;
+	
+	public List<ArticleVendu> getMesVentesByNoUtilisateurAndTime(Integer noUtilisateur, String moment)throws ArticleVenduManagerException;
 }

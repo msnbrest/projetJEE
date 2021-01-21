@@ -79,11 +79,23 @@ public class ArticleVenduManagerImpl implements IArticleVenduManager {
 		}
 
 	}
-
+	
 	@Override
 	public Integer updateArticle(Integer noCategorie) throws ArticleVenduManagerException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public List<ArticleVendu> getMesVentesByNoUtilisateurAndTime(Integer noUtilisateur, String moment)
+			throws ArticleVenduManagerException {
+		
+		try {
+			return dao.getAllByByNoUtilisateurAndTime(noUtilisateur, moment);
+			
+		} catch (ArticleVenduDALException e) {
+			throw new ArticleVenduManagerException("Erreur dans la récupération des articles aux niveau de la BLL");
+		}
+	}
+
+	
 }
