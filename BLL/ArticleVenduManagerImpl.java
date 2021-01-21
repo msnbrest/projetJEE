@@ -6,7 +6,6 @@ import java.util.List;
 import fr.eni.eniEncheres.BO.ArticleVendu;
 import fr.eni.eniEncheres.DAL.ArticleVenduDALException;
 import fr.eni.eniEncheres.DAL.DAOFact;
-import fr.eni.eniEncheres.DAL.EnchereDALException;
 import fr.eni.eniEncheres.DAL.IArticleVenduDAO;
 
 public class ArticleVenduManagerImpl implements IArticleVenduManager {

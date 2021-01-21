@@ -2,7 +2,6 @@ package fr.eni.eniEncheres.BO;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class ArticleVendu {
